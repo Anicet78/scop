@@ -1,0 +1,12 @@
+# VSCode
+.vscode
+
+# Objects
+objs/
+
+# Libs
+*.a
+
+# Binaries
+*.out
+scop
