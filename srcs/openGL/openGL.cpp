@@ -61,7 +61,13 @@ bool	openGL::init(std::string_view windowName, u32 width, u32 height) {
 	}
 	this->_window = window;
 
+	glfwMakeContextCurrent(window);
 	glfwSetWindowUserPointer(window, this);
+
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+		std::cerr << COLOR_LIGHT_RED << "Error : could not initialize GLAD" << COLOR_NC << std::endl;
+		return false;
+	}
 
 	int winWidth, winHeight;
 	glfwGetFramebufferSize(window, &winWidth, &winHeight);
@@ -79,20 +85,24 @@ bool	openGL::init(std::string_view windowName, u32 width, u32 height) {
 
 	std::cout << "✓ Window created successfully\n" << std::endl;
 
-	glfwMakeContextCurrent(window);;
-
 	return true;
+}
+
+void processInput(GLFWwindow *window)
+{
+	if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, true);
 }
 
 void openGL::loop(void) {
 	while (!glfwWindowShouldClose(this->_window)) {
-		glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glfwSwapBuffers(this->_window);
-		glfwPollEvents();
+		processInput(this->_window);
 
-		if (glfwGetKey(this->_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-			glfwSetWindowShouldClose(this->_window, 1);
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glfwPollEvents();
+		glfwSwapBuffers(this->_window);
 	}
 
 	glfwDestroyWindow(this->_window);

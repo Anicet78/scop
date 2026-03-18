@@ -13,9 +13,12 @@ LIBS		= -lglfw -lGL
 CXXFLAGS += $(HEADERS)
 
 SRCS		=	main.cpp \
-				openGL/openGL.cpp
+				openGL/openGL.cpp \
+				openGL/glad.c
 
-OBJS		= $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(SRCS))
+OBJS_CPP	= $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(filter %.cpp, $(SRCS)))
+OBJS_C		= $(patsubst %.c, $(OBJ_DIR)/%.o, $(filter %.c, $(SRCS)))
+OBJS		= $(OBJS_CPP) $(OBJS_C)
 DEPS		= $(OBJS:.o=.d)
 
 NAME		= scop
@@ -31,6 +34,10 @@ $(NAME): $(PARSER_LIB) $(OBJS)
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(HEADERS) -c $< -o $@
 
 clean:
 	rm -rf $(OBJ_DIR)
