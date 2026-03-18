@@ -95,7 +95,7 @@ void	ObjParser::ParseFile(std::string filename)
 	this->FillRaw(ifs);
 
 	ifs.close();
-	this->Print();
+	// this->Print();
 }
 
 void	ObjParser::Print(void) const

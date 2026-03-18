@@ -43,11 +43,6 @@ struct Object {
 typedef std::unordered_map<uint32_t, SmoothingGroup> SmoothingGroupList;
 typedef std::unordered_map<std::string, Object>	ObjectList;
 
-/* struct MeshGPU {
-	std::vector<Vertex>		vertices;
-	std::vector<uint32_t>	indices;
-}; */
-
 // Main class
 class ObjParser {
 

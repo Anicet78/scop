@@ -1,4 +1,4 @@
-#include "ObjParser.hpp"
+#include "scop.hpp"
 
 int	main(int ac, char **av)
 {
@@ -10,11 +10,21 @@ int	main(int ac, char **av)
 
 	ObjParser	objParser;
 	try {
+		auto start = std::chrono::steady_clock::now();
 		objParser.ParseFile(av[1]);
+		auto end = std::chrono::steady_clock::now();
+		std::cout << "Parsing success (" << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms)" << std::endl;
 	}
 	catch (std::exception& e) {
-		std::cerr << COLOR_LIGHT_RED << e.what() << COLOR_NC << std::endl;
+		std::cerr << COLOR_LIGHT_RED << "Parsing failed\n" << e.what() << COLOR_NC << std::endl;
+		return (1);
 	}
+
+	openGL openGL;
+	if (!openGL.init("scop"))
+		return (1);
+
+	openGL.loop();
 
 	return (0);
 }
