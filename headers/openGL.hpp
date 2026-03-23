@@ -7,6 +7,7 @@
 # include <iostream>
 # include <fstream>
 # include <vector>
+# include <filesystem>
 # include <glad/glad.h>
 # include <GLFW/glfw3.h>
 
@@ -21,7 +22,7 @@ class openGL {
 		u32			_VAO;
 
 		static u32			CompileShader(std::string_view path, int shaderType, std::string_view shaderName);
-		static std::string	OpenShader(const char* fileName);
+		static std::string	OpenShader(std::string_view fileName);
 		void				CreateShaders(void);
 
 	public:

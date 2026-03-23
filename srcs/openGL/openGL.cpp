@@ -87,17 +87,26 @@ bool	openGL::Init(std::string_view windowName, u32 width, u32 height) {
 	return true;
 }
 
-std::string	openGL::OpenShader(const char* fileName) {
+std::string	openGL::OpenShader(std::string_view fileName) {
+	std::filesystem::path shaderPath(fileName);
 	std::ifstream	ifs;
 
-	ifs.open(fileName);
+	ifs.open(shaderPath);
+	if (!ifs.is_open() && shaderPath.is_relative()) {
+		std::error_code ec;
+		const std::filesystem::path exePath = std::filesystem::read_symlink("/proc/self/exe", ec);
+		if (!ec) {
+			shaderPath = exePath.parent_path() / shaderPath;
+			ifs.open(shaderPath);
+		}
+	}
+
 	if (!ifs.is_open() || !ifs.good())
-		throw std::runtime_error("Could not open shader file " + std::string(fileName));
+		throw std::runtime_error("Could not open shader file " + std::string(fileName) + " (resolved: " + shaderPath.string() + ")");
 
 	std::string	content;
 
 	content.assign((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
-	content.append("\0");
 
 	return content;
 }
@@ -106,7 +115,7 @@ unsigned int	openGL::CompileShader(std::string_view path, int shaderType, std::s
 	unsigned int shader;
 	shader = glCreateShader(shaderType);
 
-	std::string shaderFile = openGL::OpenShader(path.data());
+	std::string shaderFile = openGL::OpenShader(path);
 	const char *shaderSource = shaderFile.c_str();
 	GLint length = (GLint)shaderFile.size();
 	glShaderSource(shader, 1, &shaderSource, &length);
