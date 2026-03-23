@@ -21,10 +21,12 @@ int	main(int ac, char **av)
 	}
 
 	openGL openGL;
-	if (!openGL.init("scop"))
+	if (!openGL.Init("scop"))
 		return (1);
 
-	openGL.loop();
+	openGL.LoadScene();
+
+	openGL.Loop();
 
 	return (0);
 }

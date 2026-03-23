@@ -8,13 +8,11 @@ openGL::~openGL(void) {}
 
 //Member functions-----------------------------------------
 
-u32	openGL::getWidth(void)
-{
+u32	openGL::getWidth(void) {
 	return _width;
 }
 
-u32	openGL::getHeight(void)
-{
+u32	openGL::getHeight(void) {
 	return _height;
 }
 
@@ -26,12 +24,11 @@ void	openGL::setHeight(u32 height) {
 	this->_height = height;
 }
 
-GLFWwindow*	openGL::getWindow(void)
-{
+GLFWwindow*	openGL::getWindow(void) {
 	return _window;
 }
 
-bool	openGL::init(std::string_view windowName, u32 width, u32 height) {
+bool	openGL::Init(std::string_view windowName, u32 width, u32 height) {
 
 	if (!glfwInit()) {
 		std::cerr << COLOR_LIGHT_RED << "Error : could not initialize GLFW" << COLOR_NC << std::endl;
@@ -85,16 +82,114 @@ bool	openGL::init(std::string_view windowName, u32 width, u32 height) {
 
 	std::cout << "✓ Window created successfully\n" << std::endl;
 
+	this->CreateShaders();
+
 	return true;
 }
 
-void processInput(GLFWwindow *window)
-{
+std::string	openGL::OpenShader(const char* fileName) {
+	std::ifstream	ifs;
+
+	ifs.open(fileName);
+	if (!ifs.is_open() || !ifs.good())
+		throw std::runtime_error("Could not open shader file " + std::string(fileName));
+
+	std::string	content;
+
+	content.assign((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+	content.append("\0");
+
+	return content;
+}
+
+unsigned int	openGL::CompileShader(std::string_view path, int shaderType, std::string_view shaderName) {
+	unsigned int shader;
+	shader = glCreateShader(shaderType);
+
+	std::string shaderFile = openGL::OpenShader(path.data());
+	const char *shaderSource = shaderFile.c_str();
+	GLint length = (GLint)shaderFile.size();
+	glShaderSource(shader, 1, &shaderSource, &length);
+	glCompileShader(shader);
+
+	int  success;
+	char infoLog[512];
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+
+	if(!success)
+	{
+		glGetShaderInfoLog(shader, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::" << shaderName << "::COMPILATION_FAILED\n" << infoLog << std::endl;
+	}
+
+	return (shader);
+}
+
+void	openGL::CreateShaders(void) {
+	unsigned int shaderProgram;
+	shaderProgram = glCreateProgram();
+
+	unsigned int vertexShader = openGL::CompileShader("srcs/openGL/VertexShader.glsl", GL_VERTEX_SHADER, "VERTEX");
+	unsigned int fragmentShader = openGL::CompileShader("srcs/openGL/FragmentShader.glsl", GL_FRAGMENT_SHADER, "FRAGMENT");
+
+	glAttachShader(shaderProgram, vertexShader);
+	glAttachShader(shaderProgram, fragmentShader);
+	glLinkProgram(shaderProgram);
+
+	int  success;
+	char infoLog[512];
+	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+	if(!success) {
+		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+	}
+
+	glDeleteShader(vertexShader);
+	glDeleteShader(fragmentShader);
+
+	this->_shaderProgram = shaderProgram;
+}
+
+void	openGL::LoadScene(void) {
+	float vertices[] = {
+		0.5f,  0.5f, 0.0f,
+		0.5f, -0.5f, 0.0f,
+		-0.5f, -0.5f, 0.0f,
+		-0.5f,  0.5f, 0.0f
+	};
+
+	unsigned int indices[] = {
+		0, 1, 3,
+		1, 2, 3
+	};
+
+	unsigned int VAO;
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+
+	unsigned int VBO;
+	glGenBuffers(1, &VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	unsigned int EBO;
+	glGenBuffers(1, &EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+	glEnableVertexAttribArray(0);
+
+	glBindVertexArray(0);
+	this->_VAO = VAO;
+}
+
+void processInput(GLFWwindow *window) {
 	if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
 }
 
-void openGL::loop(void) {
+void openGL::Loop(void) {
 	while (!glfwWindowShouldClose(this->_window)) {
 		processInput(this->_window);
 
@@ -102,6 +197,13 @@ void openGL::loop(void) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glfwPollEvents();
+
+		glUseProgram(this->_shaderProgram);
+		glBindVertexArray(this->_VAO);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
+
 		glfwSwapBuffers(this->_window);
 	}
 

@@ -190,7 +190,7 @@ inline float	vec2::dot(const vec2& vec) const
 
 inline vec2&	vec2::normalize(void)
 {
-	*this * Q_rsqrt(this->dot(*this));
+	*this *= Q_rsqrt(this->dot(*this));
 	return (*this);
 }
 
