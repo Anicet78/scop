@@ -5,10 +5,10 @@
 # include "vec3.hpp"
 # include "vec4.hpp"
 
-typedef vec4 Vertex;
-typedef vec3 UV;
-typedef vec3 Normal;
-typedef vec3 ParamSpaceVertex;
+using	Vertex = vec4;
+using	UV = vec3;
+using	Normal = vec3;
+using	ParamSpaceVertex = vec3;
 
 struct FaceElement {
 	uint32_t	vIndex;

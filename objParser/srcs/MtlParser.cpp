@@ -411,9 +411,9 @@ void	MtlParser::ParseFile(std::ifstream& ifs)
 	}
 }
 
-MaterialList	MtlParser::ImportMtl(std::string filename)
+MaterialList	MtlParser::ImportMtl(std::string filename, std::string& path)
 {
-	std::ifstream ifs(filename);
+	std::ifstream ifs(path + filename);
 	if (!ifs.is_open())
 		ThrowError("Could not open file `" + filename + "`: " + std::strerror(errno));
 

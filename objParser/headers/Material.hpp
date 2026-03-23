@@ -35,11 +35,11 @@ struct ParsedColor {
 	}
 };
 
-typedef ParsedColor Ambient;
-typedef ParsedColor Diffuse;
-typedef ParsedColor Specular;
-typedef ParsedColor TransmissionFilter;
-typedef ParsedColor Emissive;
+using Ambient				= ParsedColor;
+using Diffuse				= ParsedColor;
+using Specular				= ParsedColor;
+using TransmissionFilter	= ParsedColor;
+using Emissive				= ParsedColor;
 
 struct Dissolve {
 	float	factor;

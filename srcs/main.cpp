@@ -9,10 +9,26 @@ int	parseFile(std::string_view fileName, ObjParser& objParser) {
 	}
 	catch (std::exception& e) {
 		std::cerr << COLOR_LIGHT_RED << "Parsing failed\n" << e.what() << COLOR_NC << std::endl;
-		return (1);
+		return (0);
 	}
 
-	return (0);
+	return (1);
+}
+
+void	loadScene(ObjParser& objParser, openGL& openGL) {
+	std::vector<vec3> vertices;
+	std::vector<u32> indices;
+
+	for (Vertex vertex: objParser.raw.vertices) {
+		vertices.push_back(vertex.normalize());
+	}
+
+	for (Face face: objParser.raw.faces) {
+		for (FaceElement faceElem : face.elements)
+			indices.push_back(faceElem.vIndex);
+	}
+
+	openGL.LoadScene(vertices, indices);
 }
 
 int	main(int ac, char **av)
@@ -22,7 +38,7 @@ int	main(int ac, char **av)
 		return (1);
 	}
 
-	ObjParser	objParser;
+	ObjParser objParser;
 	if (!parseFile(av[1], objParser))
 		return (1);
 
@@ -30,7 +46,7 @@ int	main(int ac, char **av)
 	if (!openGL.Init("scop"))
 		return (1);
 
-	openGL.LoadScene();
+	loadScene(objParser, openGL);
 
 	openGL.Loop();
 

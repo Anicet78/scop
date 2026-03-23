@@ -34,14 +34,14 @@ struct MergingGroup {
 	float	resolution;
 };
 
-typedef std::unordered_map<std::string, Group>	GroupList;
+using GroupList = std::unordered_map<std::string, Group>;
 struct Object {
 	GroupList			groups;
 	std::vector<Group*>	activeGroups;
 };
 
-typedef std::unordered_map<uint32_t, SmoothingGroup> SmoothingGroupList;
-typedef std::unordered_map<std::string, Object>	ObjectList;
+using SmoothingGroupList	= std::unordered_map<uint32_t, SmoothingGroup>;
+using ObjectList			= std::unordered_map<std::string, Object>;
 
 // Main class
 class ObjParser {

@@ -3,8 +3,10 @@
 
 # include "color.hpp"
 # include "types.hpp"
+# include "vec3.hpp"
 # include <iostream>
 # include <fstream>
+# include <vector>
 # include <glad/glad.h>
 # include <GLFW/glfw3.h>
 
@@ -33,7 +35,7 @@ class openGL {
 		GLFWwindow*	getWindow(void);
 
 		bool	Init(std::string_view windowName = "GLFW", u32 width = 1920, u32 height = 1080);
-		void	LoadScene(void);
+		void	LoadScene(std::vector<vec3>& vertices, std::vector<u32>& indices);
 		void	Loop(void);
 
 };

@@ -4,7 +4,7 @@
 # include "parser.hpp"
 # include "Material.hpp"
 
-typedef std::unordered_map<std::string, Material> MaterialList;
+using MaterialList = std::unordered_map<std::string, Material> ;
 
 class MtlParser {
 
@@ -49,7 +49,7 @@ class MtlParser {
 		void	ParseFile(std::ifstream& ifs);
 
 	public:
-		static MaterialList	ImportMtl(std::string filename);
+		static MaterialList	ImportMtl(std::string filename, std::string& path);
 
 };
 

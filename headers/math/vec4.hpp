@@ -5,6 +5,9 @@
 # include <exception>
 # include "ft_math.hpp"
 
+struct vec2;
+struct vec3;
+
 struct vec4 {
 
 	float	x;
@@ -15,6 +18,8 @@ struct vec4 {
 	vec4(void);
 	vec4(float x, float y, float z, float w);
 	vec4(const vec4& vec) = default;
+	vec4(const vec2& vec);
+	vec4(const vec3& vec);
 
 	vec4&	operator=(const vec4& vec) = default;
 
@@ -48,6 +53,9 @@ struct vec4 {
 
 };
 
+# include "vec2.hpp"
+# include "vec3.hpp"
+
 inline vec4::vec4(void)
 {
 	this->x = 0.0f;
@@ -62,6 +70,22 @@ inline vec4::vec4(float x, float y, float z, float w)
 	this->y = y;
 	this->z = z;
 	this->w = w;
+}
+
+inline vec4::vec4(const vec2& vec)
+{
+	this->x = vec.x;
+	this->y = vec.y;
+	this->z = 0.0f;
+	this->w = 0.0f;
+}
+
+inline vec4::vec4(const vec3& vec)
+{
+	this->x = vec.x;
+	this->y = vec.y;
+	this->z = vec.z;
+	this->w = 0.0f;
 }
 
 inline bool	vec4::operator==(const vec4& vec) const

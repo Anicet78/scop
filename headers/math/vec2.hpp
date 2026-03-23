@@ -5,6 +5,9 @@
 # include <exception>
 # include "ft_math.hpp"
 
+struct vec3;
+struct vec4;
+
 struct vec2 {
 
 	float	x;
@@ -13,6 +16,8 @@ struct vec2 {
 	vec2(void);
 	vec2(float x, float y);
 	vec2(const vec2& vec) = default;
+	vec2(const vec3& vec);
+	vec2(const vec4& vec);
 
 	vec2&	operator=(const vec2& vec) = default;
 
@@ -46,6 +51,9 @@ struct vec2 {
 
 };
 
+# include "vec3.hpp"
+# include "vec4.hpp"
+
 inline vec2::vec2(void)
 {
 	this->x = 0.0f;
@@ -56,6 +64,18 @@ inline vec2::vec2(float x, float y)
 {
 	this->x = x;
 	this->y = y;
+}
+
+inline vec2::vec2(const vec3& vec)
+{
+	this->x = vec.x;
+	this->y = vec.y;
+}
+
+inline vec2::vec2(const vec4& vec)
+{
+	this->x = vec.x;
+	this->y = vec.y;
 }
 
 inline bool	vec2::operator==(const vec2& vec) const
@@ -196,7 +216,7 @@ inline vec2&	vec2::normalize(void)
 
 inline std::ostream& operator<<(std::ostream& os, const vec2& v)
 {
-	os << "vec4(" << v.x << ", " << v.y << ")";
+	os << "vec2(" << v.x << ", " << v.y << ")";
 	return os;
 }
 

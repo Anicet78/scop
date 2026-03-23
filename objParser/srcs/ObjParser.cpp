@@ -14,10 +14,12 @@ ObjParser::ObjParser(void)
 
 void	ObjParser::AddMaterialList(std::istringstream& ss)
 {
+	std::string path = fileName.find_last_of('/') == fileName.npos ? "" : this->fileName.erase(fileName.find_last_of('/') + 1, fileName.size() - fileName.find_last_of('/'));
+
 	std::string mtlFileName;
 	while (ss >> mtlFileName)
 	{
-		MaterialList newMaterialList = MtlParser::ImportMtl(mtlFileName);
+		MaterialList newMaterialList = MtlParser::ImportMtl(mtlFileName, path);
 		for (const auto& [newKey, newValue] : newMaterialList) {
 			this->materials[newKey] = newValue;
 		}
