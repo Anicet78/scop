@@ -13,6 +13,8 @@ LIBS		= -lglfw -lGL
 CXXFLAGS += $(HEADERS)
 
 SRCS		=	main.cpp \
+				load.cpp \
+				loop.cpp \
 				openGL/openGL.cpp \
 				openGL/glad.c
 

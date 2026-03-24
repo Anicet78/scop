@@ -2,18 +2,18 @@
 
 //constructors/destructors---------------------------------
 
-openGL::openGL(void) {}
+openGL::openGL(void) : _width(0), _height(0), _window(nullptr), _shaderProgram(0), _VAO(0), _indexCount(0) {}
 
 openGL::~openGL(void) {}
 
 //Member functions-----------------------------------------
 
 u32	openGL::getWidth(void) {
-	return _width;
+	return this->_width;
 }
 
 u32	openGL::getHeight(void) {
-	return _height;
+	return this->_height;
 }
 
 void	openGL::setWidth(u32 width) {
@@ -25,7 +25,19 @@ void	openGL::setHeight(u32 height) {
 }
 
 GLFWwindow*	openGL::getWindow(void) {
-	return _window;
+	return this->_window;
+}
+
+u32	openGL::getShaderProgram(void) {
+	return this->_shaderProgram;
+}
+
+u32	openGL::getVAO(void) {
+	return this->_VAO;
+}
+
+u32	openGL::getIndexCount(void) {
+	return this->_indexCount;
 }
 
 bool	openGL::Init(std::string_view windowName, u32 width, u32 height) {
@@ -48,7 +60,7 @@ bool	openGL::Init(std::string_view windowName, u32 width, u32 height) {
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
 	// Antialiasing (MSAA)
-	// glfwWindowHint(GLFW_SAMPLES, 4);
+	glfwWindowHint(GLFW_SAMPLES, 4);
 
 	GLFWwindow* window = glfwCreateWindow(width, height, windowName.data(), NULL, NULL);
 	if (!window) {
@@ -159,7 +171,14 @@ void	openGL::CreateShaders(void) {
 	this->_shaderProgram = shaderProgram;
 }
 
-void	openGL::LoadScene(std::vector<vec3>& vertices, std::vector<u32>& indices) {
+void	openGL::LoadScene(
+	const void* vertexData,
+	std::size_t vertexBufferSize,
+	const void* indexData,
+	std::size_t indexBufferSize,
+	const std::vector<VertexAttribDesc>& attributes,
+	GLenum usage
+) {
 	unsigned int VAO;
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
@@ -167,41 +186,33 @@ void	openGL::LoadScene(std::vector<vec3>& vertices, std::vector<u32>& indices) {
 	unsigned int VBO;
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vec3), vertices.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertexBufferSize, vertexData, usage);
 
 	unsigned int EBO;
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(u32), indices.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexBufferSize, indexData, usage);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vec3), nullptr);
-	glEnableVertexAttribArray(0);
+	for (const VertexAttribDesc& attr : attributes) {
+		glVertexAttribPointer(
+			attr.index,
+			attr.size,
+			attr.type,
+			attr.normalized ? GL_TRUE : GL_FALSE,
+			attr.stride,
+			reinterpret_cast<const void*>(attr.offset)
+		);
+		glEnableVertexAttribArray(attr.index);
+	}
 
 	glBindVertexArray(0);
 	this->_VAO = VAO;
+	this->_indexCount = static_cast<u32>(indexBufferSize / sizeof(u32));
 }
 
-void processInput(GLFWwindow *window) {
-	if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, true);
-}
-
-void openGL::Loop(void) {
+void openGL::Loop(void (*loop)(openGL&)) {
 	while (!glfwWindowShouldClose(this->_window)) {
-		processInput(this->_window);
-
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		glfwPollEvents();
-
-		glUseProgram(this->_shaderProgram);
-		glBindVertexArray(this->_VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		glBindVertexArray(0);
-
-		glfwSwapBuffers(this->_window);
+		loop(*this);
 	}
 
 	glfwDestroyWindow(this->_window);
