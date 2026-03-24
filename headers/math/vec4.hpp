@@ -19,7 +19,9 @@ struct vec4 {
 	vec4(float x, float y, float z, float w);
 	vec4(const vec4& vec) = default;
 	vec4(const vec2& vec);
+	vec4(const vec2& vec, float z, float w);
 	vec4(const vec3& vec);
+	vec4(const vec3& vec, float w);
 
 	vec4&	operator=(const vec4& vec) = default;
 
@@ -47,9 +49,15 @@ struct vec4 {
 	vec4			operator-(void) const;
 	float&			operator[](int idx);
 	const float&	operator[](int idx) const;
+	float*			data(void);
+	const float*	data(void) const;
 
 	float	dot(const vec4& vec) const;
+	float	lengthSquared(void) const;
+	float	length(void) const;
 	vec4&	normalize(void);
+	vec4	normalized(void) const;
+	bool	equalsEpsilon(const vec4& vec, float epsilon = FT_EPSILON) const;
 
 };
 
@@ -80,12 +88,28 @@ inline vec4::vec4(const vec2& vec)
 	this->w = 0.0f;
 }
 
+inline vec4::vec4(const vec2& vec, float z, float w)
+{
+	this->x = vec.x;
+	this->y = vec.y;
+	this->z = z;
+	this->w = w;
+}
+
 inline vec4::vec4(const vec3& vec)
 {
 	this->x = vec.x;
 	this->y = vec.y;
 	this->z = vec.z;
 	this->w = 0.0f;
+}
+
+inline vec4::vec4(const vec3& vec, float w)
+{
+	this->x = vec.x;
+	this->y = vec.y;
+	this->z = vec.z;
+	this->w = w;
 }
 
 inline bool	vec4::operator==(const vec4& vec) const
@@ -229,15 +253,60 @@ inline const float&	vec4::operator[](int idx) const
 	return (idx == 0 ? this->x : idx == 1 ? this->y : idx == 2 ? this->z : this->w);
 }
 
+inline float*	vec4::data(void)
+{
+	return (&this->x);
+}
+
+inline const float*	vec4::data(void) const
+{
+	return (&this->x);
+}
+
 inline float	vec4::dot(const vec4& vec) const
 {
 	return (this->x * vec.x + this->y * vec.y + this->z * vec.z + this->w * vec.w);
 }
 
+inline float	vec4::lengthSquared(void) const
+{
+	return (this->dot(*this));
+}
+
+inline float	vec4::length(void) const
+{
+	return (std::sqrt(this->lengthSquared()));
+}
+
 inline vec4&	vec4::normalize(void)
 {
-	*this *= Q_rsqrt(this->dot(*this));
+	float lenSquared = this->lengthSquared();
+	if (lenSquared <= FT_EPSILON)
+		return (*this);
+	*this *= Q_rsqrt(lenSquared);
 	return (*this);
+}
+
+inline vec4	vec4::normalized(void) const
+{
+	vec4 out(*this);
+	out.normalize();
+	return (out);
+}
+
+inline bool	vec4::equalsEpsilon(const vec4& vec, float epsilon) const
+{
+	return (
+		std::fabs(this->x - vec.x) <= epsilon
+		&& std::fabs(this->y - vec.y) <= epsilon
+		&& std::fabs(this->z - vec.z) <= epsilon
+		&& std::fabs(this->w - vec.w) <= epsilon
+	);
+}
+
+inline vec4 operator*(float value, const vec4& vec)
+{
+	return (vec * value);
 }
 
 inline std::ostream& operator<<(std::ostream& os, const vec4& v)

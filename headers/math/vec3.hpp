@@ -18,6 +18,7 @@ struct vec3 {
 	vec3(float x, float y, float z);
 	vec3(const vec3& vec) = default;
 	vec3(const vec2& vec);
+	vec3(const vec2& vec, float z);
 	vec3(const vec4& vec);
 
 	vec3&	operator=(const vec3& vec) = default;
@@ -46,9 +47,16 @@ struct vec3 {
 	vec3			operator-(void) const;
 	float&			operator[](int idx);
 	const float&	operator[](int idx) const;
+	float*			data(void);
+	const float*	data(void) const;
 
 	float	dot(const vec3& vec) const;
+	float	lengthSquared(void) const;
+	float	length(void) const;
+	vec3	cross(const vec3& vec) const;
 	vec3&	normalize(void);
+	vec3	normalized(void) const;
+	bool	equalsEpsilon(const vec3& vec, float epsilon = FT_EPSILON) const;
 
 };
 
@@ -74,6 +82,13 @@ inline vec3::vec3(const vec2& vec)
 	this->x = vec.x;
 	this->y = vec.y;
 	this->z = 0.0f;
+}
+
+inline vec3::vec3(const vec2& vec, float z)
+{
+	this->x = vec.x;
+	this->y = vec.y;
+	this->z = z;
 }
 
 inline vec3::vec3(const vec4& vec)
@@ -216,15 +231,68 @@ inline const float&	vec3::operator[](int idx) const
 	return (idx == 0 ? this->x : idx == 1 ? this->y : this-> z);
 }
 
+inline float*	vec3::data(void)
+{
+	return (&this->x);
+}
+
+inline const float*	vec3::data(void) const
+{
+	return (&this->x);
+}
+
 inline float	vec3::dot(const vec3& vec) const
 {
 	return (this->x * vec.x + this->y * vec.y + this->z * vec.z);
 }
 
+inline float	vec3::lengthSquared(void) const
+{
+	return (this->dot(*this));
+}
+
+inline float	vec3::length(void) const
+{
+	return (std::sqrt(this->lengthSquared()));
+}
+
+inline vec3	vec3::cross(const vec3& vec) const
+{
+	return (vec3(
+		this->y * vec.z - this->z * vec.y,
+		this->z * vec.x - this->x * vec.z,
+		this->x * vec.y - this->y * vec.x
+	));
+}
+
 inline vec3&	vec3::normalize(void)
 {
-	*this *= Q_rsqrt(this->dot(*this));
+	float lenSquared = this->lengthSquared();
+	if (lenSquared <= FT_EPSILON)
+		return (*this);
+	*this *= Q_rsqrt(lenSquared);
 	return (*this);
+}
+
+inline vec3	vec3::normalized(void) const
+{
+	vec3 out(*this);
+	out.normalize();
+	return (out);
+}
+
+inline bool	vec3::equalsEpsilon(const vec3& vec, float epsilon) const
+{
+	return (
+		std::fabs(this->x - vec.x) <= epsilon
+		&& std::fabs(this->y - vec.y) <= epsilon
+		&& std::fabs(this->z - vec.z) <= epsilon
+	);
+}
+
+inline vec3 operator*(float value, const vec3& vec)
+{
+	return (vec * value);
 }
 
 inline std::ostream& operator<<(std::ostream& os, const vec3& v)

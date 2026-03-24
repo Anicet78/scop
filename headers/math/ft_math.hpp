@@ -4,8 +4,12 @@
 # include <cstring>
 # include <cstdint>
 
+constexpr float	FT_EPSILON = 1e-6f;
+
 inline float Q_rsqrt(float number)
 {
+	if (number <= 0.0f)
+		return (0.0f);
 	float x2 = number * 0.5F, y = number;
 	std::uint32_t i;
 	std::memcpy(&i, &y, sizeof(float));

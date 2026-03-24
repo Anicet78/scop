@@ -45,9 +45,15 @@ struct vec2 {
 	vec2			operator-(void) const;
 	float&			operator[](int idx);
 	const float&	operator[](int idx) const;
+	float*			data(void);
+	const float*	data(void) const;
 
 	float	dot(const vec2& vec) const;
+	float	lengthSquared(void) const;
+	float	length(void) const;
 	vec2&	normalize(void);
+	vec2	normalized(void) const;
+	bool	equalsEpsilon(const vec2& vec, float epsilon = FT_EPSILON) const;
 
 };
 
@@ -203,15 +209,58 @@ inline const float&	vec2::operator[](int idx) const
 	return (idx == 0 ? this->x : this->y);
 }
 
+inline float*	vec2::data(void)
+{
+	return (&this->x);
+}
+
+inline const float*	vec2::data(void) const
+{
+	return (&this->x);
+}
+
 inline float	vec2::dot(const vec2& vec) const
 {
 	return (this->x * vec.x + this->y * vec.y);
 }
 
+inline float	vec2::lengthSquared(void) const
+{
+	return (this->dot(*this));
+}
+
+inline float	vec2::length(void) const
+{
+	return (std::sqrt(this->lengthSquared()));
+}
+
 inline vec2&	vec2::normalize(void)
 {
-	*this *= Q_rsqrt(this->dot(*this));
+	float lenSquared = this->lengthSquared();
+	if (lenSquared <= FT_EPSILON)
+		return (*this);
+	*this *= Q_rsqrt(lenSquared);
 	return (*this);
+}
+
+inline vec2	vec2::normalized(void) const
+{
+	vec2 out(*this);
+	out.normalize();
+	return (out);
+}
+
+inline bool	vec2::equalsEpsilon(const vec2& vec, float epsilon) const
+{
+	return (
+		std::fabs(this->x - vec.x) <= epsilon
+		&& std::fabs(this->y - vec.y) <= epsilon
+	);
+}
+
+inline vec2 operator*(float value, const vec2& vec)
+{
+	return (vec * value);
 }
 
 inline std::ostream& operator<<(std::ostream& os, const vec2& v)
