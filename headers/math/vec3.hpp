@@ -35,14 +35,14 @@ struct vec3 {
 	vec3&	operator*=(const vec3& vec);
 	vec3&	operator/=(const vec3& vec);
 
-	vec3	operator+(float value) const;
-	vec3	operator-(float value) const;
-	vec3	operator*(float value) const;
-	vec3	operator/(float value) const;
-	vec3&	operator+=(float value);
-	vec3&	operator-=(float value);
-	vec3&	operator*=(float value);
-	vec3&	operator/=(float value);
+	vec3	operator+(const float scalar) const;
+	vec3	operator-(const float scalar) const;
+	vec3	operator*(const float scalar) const;
+	vec3	operator/(const float scalar) const;
+	vec3&	operator+=(const float scalar);
+	vec3&	operator-=(const float scalar);
+	vec3&	operator*=(const float scalar);
+	vec3&	operator/=(const float scalar);
 
 	vec3			operator-(void) const;
 	float&			operator[](int idx);
@@ -160,55 +160,55 @@ inline vec3&	vec3::operator/=(const vec3& vec)
 	return (*this);
 }
 
-inline vec3	vec3::operator+(float value) const
+inline vec3	vec3::operator+(const float scalar) const
 {
-	return (vec3(this->x + value, this->y + value, this->z + value));
+	return (vec3(this->x + scalar, this->y + scalar, this->z + scalar));
 }
 
-inline vec3	vec3::operator-(float value) const
+inline vec3	vec3::operator-(const float scalar) const
 {
-	return (vec3(this->x - value, this->y - value, this->z - value));
+	return (vec3(this->x - scalar, this->y - scalar, this->z - scalar));
 }
 
-inline vec3	vec3::operator*(float value) const
+inline vec3	vec3::operator*(const float scalar) const
 {
-	return (vec3(this->x * value, this->y * value, this->z * value));
+	return (vec3(this->x * scalar, this->y * scalar, this->z * scalar));
 }
 
-inline vec3	vec3::operator/(float value) const
+inline vec3	vec3::operator/(const float scalar) const
 {
-	return (vec3(this->x / value, this->y / value, this->z / value));
+	return (vec3(this->x / scalar, this->y / scalar, this->z / scalar));
 }
 
-inline vec3&	vec3::operator+=(float value)
+inline vec3&	vec3::operator+=(const float scalar)
 {
-	this->x += value;
-	this->y += value;
-	this->z += value;
+	this->x += scalar;
+	this->y += scalar;
+	this->z += scalar;
 	return (*this);
 }
 
-inline vec3&	vec3::operator-=(float value)
+inline vec3&	vec3::operator-=(const float scalar)
 {
-	this->x -= value;
-	this->y -= value;
-	this->z -= value;
+	this->x -= scalar;
+	this->y -= scalar;
+	this->z -= scalar;
 	return (*this);
 }
 
-inline vec3&	vec3::operator*=(float value)
+inline vec3&	vec3::operator*=(const float scalar)
 {
-	this->x *= value;
-	this->y *= value;
-	this->z *= value;
+	this->x *= scalar;
+	this->y *= scalar;
+	this->z *= scalar;
 	return (*this);
 }
 
-inline vec3&	vec3::operator/=(float value)
+inline vec3&	vec3::operator/=(const float scalar)
 {
-	this->x /= value;
-	this->y /= value;
-	this->z /= value;
+	this->x /= scalar;
+	this->y /= scalar;
+	this->z /= scalar;
 	return (*this);
 }
 
@@ -290,9 +290,9 @@ inline bool	vec3::equalsEpsilon(const vec3& vec, float epsilon) const
 	);
 }
 
-inline vec3 operator*(float value, const vec3& vec)
+inline vec3 operator*(const float scalar, const vec3& vec)
 {
-	return (vec * value);
+	return (vec * scalar);
 }
 
 inline std::ostream& operator<<(std::ostream& os, const vec3& v)

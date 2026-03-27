@@ -37,14 +37,14 @@ struct vec4 {
 	vec4&	operator*=(const vec4& vec);
 	vec4&	operator/=(const vec4& vec);
 
-	vec4	operator+(float value) const;
-	vec4	operator-(float value) const;
-	vec4	operator*(float value) const;
-	vec4	operator/(float value) const;
-	vec4&	operator+=(float value);
-	vec4&	operator-=(float value);
-	vec4&	operator*=(float value);
-	vec4&	operator/=(float value);
+	vec4	operator+(const float scalar) const;
+	vec4	operator-(const float scalar) const;
+	vec4	operator*(const float scalar) const;
+	vec4	operator/(const float scalar) const;
+	vec4&	operator+=(const float scalar);
+	vec4&	operator-=(const float scalar);
+	vec4&	operator*=(const float scalar);
+	vec4&	operator/=(const float scalar);
 
 	vec4			operator-(void) const;
 	float&			operator[](int idx);
@@ -178,59 +178,59 @@ inline vec4&	vec4::operator/=(const vec4& vec)
 	return (*this);
 }
 
-inline vec4	vec4::operator+(float value) const
+inline vec4	vec4::operator+(const float scalar) const
 {
-	return (vec4(this->x + value, this->y + value, this->z + value, this->w + value));
+	return (vec4(this->x + scalar, this->y + scalar, this->z + scalar, this->w + scalar));
 }
 
-inline vec4	vec4::operator-(float value) const
+inline vec4	vec4::operator-(const float scalar) const
 {
-	return (vec4(this->x - value, this->y - value, this->z - value, this->w - value));
+	return (vec4(this->x - scalar, this->y - scalar, this->z - scalar, this->w - scalar));
 }
 
-inline vec4	vec4::operator*(float value) const
+inline vec4	vec4::operator*(const float scalar) const
 {
-	return (vec4(this->x * value, this->y * value, this->z * value, this->w * value));
+	return (vec4(this->x * scalar, this->y * scalar, this->z * scalar, this->w * scalar));
 }
 
-inline vec4	vec4::operator/(float value) const
+inline vec4	vec4::operator/(const float scalar) const
 {
-	return (vec4(this->x / value, this->y / value, this->z / value, this->w / value));
+	return (vec4(this->x / scalar, this->y / scalar, this->z / scalar, this->w / scalar));
 }
 
-inline vec4&	vec4::operator+=(float value)
+inline vec4&	vec4::operator+=(const float scalar)
 {
-	this->x += value;
-	this->y += value;
-	this->z += value;
-	this->w += value;
+	this->x += scalar;
+	this->y += scalar;
+	this->z += scalar;
+	this->w += scalar;
 	return (*this);
 }
 
-inline vec4&	vec4::operator-=(float value)
+inline vec4&	vec4::operator-=(const float scalar)
 {
-	this->x -= value;
-	this->y -= value;
-	this->z -= value;
-	this->w -= value;
+	this->x -= scalar;
+	this->y -= scalar;
+	this->z -= scalar;
+	this->w -= scalar;
 	return (*this);
 }
 
-inline vec4&	vec4::operator*=(float value)
+inline vec4&	vec4::operator*=(const float scalar)
 {
-	this->x *= value;
-	this->y *= value;
-	this->z *= value;
-	this->w *= value;
+	this->x *= scalar;
+	this->y *= scalar;
+	this->z *= scalar;
+	this->w *= scalar;
 	return (*this);
 }
 
-inline vec4&	vec4::operator/=(float value)
+inline vec4&	vec4::operator/=(const float scalar)
 {
-	this->x /= value;
-	this->y /= value;
-	this->z /= value;
-	this->w /= value;
+	this->x /= scalar;
+	this->y /= scalar;
+	this->z /= scalar;
+	this->w /= scalar;
 	return (*this);
 }
 
@@ -304,9 +304,9 @@ inline bool	vec4::equalsEpsilon(const vec4& vec, float epsilon) const
 	);
 }
 
-inline vec4 operator*(float value, const vec4& vec)
+inline vec4 operator*(const float scalar, const vec4& vec)
 {
-	return (vec * value);
+	return (vec * scalar);
 }
 
 inline std::ostream& operator<<(std::ostream& os, const vec4& v)

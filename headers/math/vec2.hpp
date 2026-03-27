@@ -33,14 +33,14 @@ struct vec2 {
 	vec2&	operator*=(const vec2& vec);
 	vec2&	operator/=(const vec2& vec);
 
-	vec2	operator+(float value) const;
-	vec2	operator-(float value) const;
-	vec2	operator*(float value) const;
-	vec2	operator/(float value) const;
-	vec2&	operator+=(float value);
-	vec2&	operator-=(float value);
-	vec2&	operator*=(float value);
-	vec2&	operator/=(float value);
+	vec2	operator+(const float scalar) const;
+	vec2	operator-(const float scalar) const;
+	vec2	operator*(const float scalar) const;
+	vec2	operator/(const float scalar) const;
+	vec2&	operator+=(const float scalar);
+	vec2&	operator-=(const float scalar);
+	vec2&	operator*=(const float scalar);
+	vec2&	operator/=(const float scalar);
 
 	vec2			operator-(void) const;
 	float&			operator[](int idx);
@@ -142,51 +142,51 @@ inline vec2&	vec2::operator/=(const vec2& vec)
 	return (*this);
 }
 
-inline vec2	vec2::operator+(float value) const
+inline vec2	vec2::operator+(const float scalar) const
 {
-	return (vec2(this->x + value, this->y + value));
+	return (vec2(this->x + scalar, this->y + scalar));
 }
 
-inline vec2	vec2::operator-(float value) const
+inline vec2	vec2::operator-(const float scalar) const
 {
-	return (vec2(this->x - value, this->y - value));
+	return (vec2(this->x - scalar, this->y - scalar));
 }
 
-inline vec2	vec2::operator*(float value) const
+inline vec2	vec2::operator*(const float scalar) const
 {
-	return (vec2(this->x * value, this->y * value));
+	return (vec2(this->x * scalar, this->y * scalar));
 }
 
-inline vec2	vec2::operator/(float value) const
+inline vec2	vec2::operator/(const float scalar) const
 {
-	return (vec2(this->x / value, this->y / value));
+	return (vec2(this->x / scalar, this->y / scalar));
 }
 
-inline vec2&	vec2::operator+=(float value)
+inline vec2&	vec2::operator+=(const float scalar)
 {
-	this->x += value;
-	this->y += value;
+	this->x += scalar;
+	this->y += scalar;
 	return (*this);
 }
 
-inline vec2&	vec2::operator-=(float value)
+inline vec2&	vec2::operator-=(const float scalar)
 {
-	this->x -= value;
-	this->y -= value;
+	this->x -= scalar;
+	this->y -= scalar;
 	return (*this);
 }
 
-inline vec2&	vec2::operator*=(float value)
+inline vec2&	vec2::operator*=(const float scalar)
 {
-	this->x *= value;
-	this->y *= value;
+	this->x *= scalar;
+	this->y *= scalar;
 	return (*this);
 }
 
-inline vec2&	vec2::operator/=(float value)
+inline vec2&	vec2::operator/=(const float scalar)
 {
-	this->x /= value;
-	this->y /= value;
+	this->x /= scalar;
+	this->y /= scalar;
 	return (*this);
 }
 
@@ -258,9 +258,9 @@ inline bool	vec2::equalsEpsilon(const vec2& vec, float epsilon) const
 	);
 }
 
-inline vec2 operator*(float value, const vec2& vec)
+inline vec2 operator*(const float scalar, const vec2& vec)
 {
-	return (vec * value);
+	return (vec * scalar);
 }
 
 inline std::ostream& operator<<(std::ostream& os, const vec2& v)

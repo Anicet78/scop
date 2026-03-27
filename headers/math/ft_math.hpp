@@ -3,6 +3,7 @@
 
 # include <cstring>
 # include <cstdint>
+# include <cmath>
 
 constexpr float	FT_EPSILON = 1e-6f;
 
