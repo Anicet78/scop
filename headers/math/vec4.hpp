@@ -281,7 +281,7 @@ inline float	vec4::length(void) const
 inline vec4&	vec4::normalize(void)
 {
 	float lenSquared = this->lengthSquared();
-	if (lenSquared <= FT_EPSILON)
+	if (lenSquared <= FT_EPSILON * FT_EPSILON)
 		return (*this);
 	*this *= Q_rsqrt(lenSquared);
 	return (*this);

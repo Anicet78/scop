@@ -221,14 +221,14 @@ inline float&	vec3::operator[](int idx)
 {
 	if (idx < 0 || idx > 2)
 		throw std::runtime_error("Invalid index: " + std::to_string(idx));
-	return (idx == 0 ? this->x : idx == 1 ? this->y : this-> z);
+	return (idx == 0 ? this->x : idx == 1 ? this->y : this->z);
 }
 
 inline const float&	vec3::operator[](int idx) const
 {
 	if (idx < 0 || idx > 2)
 		throw std::runtime_error("Invalid index: " + std::to_string(idx));
-	return (idx == 0 ? this->x : idx == 1 ? this->y : this-> z);
+	return (idx == 0 ? this->x : idx == 1 ? this->y : this->z);
 }
 
 inline float*	vec3::data(void)
@@ -268,7 +268,7 @@ inline vec3	vec3::cross(const vec3& vec) const
 inline vec3&	vec3::normalize(void)
 {
 	float lenSquared = this->lengthSquared();
-	if (lenSquared <= FT_EPSILON)
+	if (lenSquared <= FT_EPSILON * FT_EPSILON)
 		return (*this);
 	*this *= Q_rsqrt(lenSquared);
 	return (*this);

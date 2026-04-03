@@ -6,6 +6,7 @@
 # include <cmath>
 
 constexpr float	FT_EPSILON = 1e-6f;
+constexpr float PI = 3.14159265358979323846f;
 
 inline float Q_rsqrt(float number)
 {
@@ -17,6 +18,16 @@ inline float Q_rsqrt(float number)
 	i  = 0x5f3759df - ( i >> 1 );
 	std::memcpy(&y, &i, sizeof(float));
 	return y * ( 1.5F - ( x2 * y * y ) );
+}
+
+inline float radians(float degrees)
+{
+	return degrees * (PI / 180.0f);
+}
+
+inline float degrees(float radians)
+{
+	return radians * (180.0f / PI);
 }
 
 #endif // !FT_MATH_HPP
