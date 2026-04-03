@@ -20,7 +20,7 @@ void	loadScene(ObjParser& objParser, openGL& openGL) {
 	std::vector<u32> indices;
 
 	for (Vertex vertex: objParser.raw.vertices) {
-		vertices.push_back(vec3(vertex));
+		vertices.push_back(vec3(vertex.normalized()));
 	}
 
 	for (Face face: objParser.raw.faces) {
