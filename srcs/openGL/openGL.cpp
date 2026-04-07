@@ -78,6 +78,8 @@ bool	openGL::Init(std::string_view windowName, u32 width, u32 height) {
 		return false;
 	}
 
+	glEnable(GL_DEPTH_TEST);
+
 	int winWidth, winHeight;
 	glfwGetFramebufferSize(window, &winWidth, &winHeight);
 	glViewport(0, 0, winWidth, winHeight);

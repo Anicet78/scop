@@ -56,6 +56,7 @@ struct mat4 {
 	static mat4	translate(const mat4& mat, const vec3& vec);
 	static mat4	scale(const mat4& mat, const vec3& vec);
 	static mat4	rotate(const mat4& mat, float radian, const vec3& vec);
+	static mat4	perspective(float fov, float aspect, float near, float far);
 };
 
 inline float&	mat4::operator[](const i64 idx)
@@ -422,6 +423,20 @@ inline mat4	mat4::rotate(const mat4& mat, float radian, const vec3& vec) {
 	rot[10] = cosA + axis.z * axis.z * oneMinusCos;
 
 	return (mat * rot);
+}
+
+inline mat4 mat4::perspective(float fov, float aspect, float near, float far)
+{
+	mat4 result;
+	const float tanHalfFov = tan(fov / 2.0f);
+
+	result[0] = 1.0f / (aspect * tanHalfFov);
+	result[5] = 1.0f / tanHalfFov;
+	result[10] = (far + near) / (near - far);
+	result[11] = (2.0f * far * near) / (near - far);
+	result[14] = -1.0f;
+
+	return result;
 }
 
 inline std::ostream& operator<<(std::ostream& os, const mat4& m)
