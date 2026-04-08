@@ -1,21 +1,52 @@
 #include "scop.hpp"
 
-void processInput(GLFWwindow *window) {
+void*	movement_enabled;
+
+void processInput(openGL& openGL) {
+	GLFWwindow*	window = openGL.getWindow();
+
 	if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
+
+	float	cameraSpeed = 0.05f;
+	vec3	cameraPos = openGL.cam.getPosition();
+	vec3	cameraTarget = openGL.cam.getTarget();
+	vec3	cameraUp = vec3::up();
+	vec3	forward = (cameraTarget - cameraPos).normalized();
+
+	if (forward.lengthSquared() <= FT_EPSILON * FT_EPSILON)
+		forward = vec3::front();
+
+	vec3	right = -cameraUp.cross(forward).normalized();
+	vec3	up = right.cross(forward).normalized();
+	vec3	delta;
+
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		delta += cameraSpeed * forward;
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		delta -= cameraSpeed * forward;
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		delta -= right * cameraSpeed;
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		delta += right * cameraSpeed;
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+		delta += up * cameraSpeed;
+	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+		delta -= up * cameraSpeed;
+
+	openGL.cam.setPosition(cameraPos + delta);
+	openGL.cam.setTarget(cameraTarget + delta);
 }
 
 void	loop(openGL& openGL) {
-	processInput(openGL.getWindow());
+	processInput(openGL);
 
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glUseProgram(openGL.getShaderProgram());
 
-	openGL.cam.setPosition(vec3(0.0f, 0.0f, -15.0f));
-
-	mat4 model = mat4::rotate(mat4::identity(), (float)glfwGetTime(), vec3(0.5f, 1.0f, 0.0f));
+	mat4 model = mat4::identity();
 
 	mat4 view = openGL.cam.lookAt();
 
