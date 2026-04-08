@@ -1,0 +1,43 @@
+# Cube simple - 1x1x1, centré en Z=-3 (devant la caméra OpenGL)
+# Caméra par défaut OpenGL : position (0,0,0), regarde vers Z négatif
+# Faces triangulées
+
+o Cube
+
+# Sommets (x, y, z)
+v -0.5  0.5 -0.5
+v  0.5  0.5 -0.5
+v  0.5 -0.5 -0.5
+v -0.5 -0.5 -0.5
+v -0.5  0.5  0.5
+v  0.5  0.5  0.5
+v  0.5 -0.5  0.5
+v -0.5 -0.5  0.5
+
+# Normales
+vn  0  0 -1
+vn  0  0  1
+vn  1  0  0
+vn -1  0  0
+vn  0  1  0
+vn  0 -1  0
+
+# Faces triangulées (2 triangles par face)
+# Face avant (Z = -3.5)
+f 1//1 2//1 3//1
+f 1//1 3//1 4//1
+# Face arrière (Z = -2.5)
+f 6//2 5//2 8//2
+f 6//2 8//2 7//2
+# Face droite (X = +0.5)
+f 2//3 6//3 7//3
+f 2//3 7//3 3//3
+# Face gauche (X = -0.5)
+f 5//4 1//4 4//4
+f 5//4 4//4 8//4
+# Face haut (Y = +0.5)
+f 5//5 6//5 2//5
+f 5//5 2//5 1//5
+# Face bas (Y = -0.5)
+f 4//6 3//6 7//6
+f 4//6 7//6 8//6

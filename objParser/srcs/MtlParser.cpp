@@ -388,7 +388,7 @@ void	MtlParser::ParseFile(std::ifstream& ifs)
 			this->SetMap(ss, this->materials[this->currentMaterial].mapDecal, prefix);
 		else if (prefix == "disp")
 			this->SetMap(ss, this->materials[this->currentMaterial].mapDisp, prefix);
-		else if (prefix == "bump")
+		else if (prefix == "bump" || prefix == "map_Bump")
 			this->SetMap(ss, this->materials[this->currentMaterial].mapBump, prefix);
 		else if (prefix == "map_Pr")
 			this->SetMap(ss, this->materials[this->currentMaterial].mapRoughness, prefix);

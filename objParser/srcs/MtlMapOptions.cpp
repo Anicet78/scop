@@ -18,7 +18,7 @@ bool	MtlParser::ParseOnOff(std::istringstream& ss, std::string& option, std::str
 
 void	MtlParser::SetBumpMultiplier(std::istringstream& ss, TextureMap& map, std::string& option, std::string& statement)
 {
-	if (statement != "bump")
+	if (statement != "bump" && statement != "map_Bump")
 		ThrowError("This option isn't available in `" + statement + "`", option, this->countLines, this->fileName);
 
 	std::string value;
