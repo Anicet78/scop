@@ -3,7 +3,7 @@
 
 # include <cstdio>
 # include <chrono>
-# include "openGL.hpp"
+# include "openGL/openGL.hpp"
 # include "ObjParser.hpp"
 # include "vec2.hpp"
 # include "vec3.hpp"

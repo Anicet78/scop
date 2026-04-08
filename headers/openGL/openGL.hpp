@@ -4,13 +4,14 @@
 # include "color.hpp"
 # include "types.hpp"
 # include "vec3.hpp"
+# include "Camera.hpp"
 # include <iostream>
 # include <fstream>
 # include <vector>
 # include <filesystem>
 # include <cmath>
 # include <cstddef>
-# include <glad/glad.h>
+# include "glad/glad.h"
 # include <GLFW/glfw3.h>
 
 struct VertexAttribDesc {
@@ -45,6 +46,7 @@ class openGL {
 		u32			_VAO;
 		u32			_indexCount;
 
+
 		static u32			CompileShader(std::string_view path, int shaderType, std::string_view shaderName);
 		static std::string	OpenShader(std::string_view fileName);
 		void				CreateShaders(void);
@@ -52,6 +54,8 @@ class openGL {
 	public:
 		openGL(void);
 		~openGL(void);
+
+		Camera	cam;
 
 		void		setWidth(u32 width);
 		void		setHeight(u32 height);

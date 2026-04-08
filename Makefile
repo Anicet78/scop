@@ -4,7 +4,7 @@ CXXFLAGS	= -std=c++20 -MMD -MP -ggdb -Wall -Wextra
 PARSER_DIR	= ./objParser
 PARSER_LIB	= $(PARSER_DIR)/libobjparser.a
 
-HEADERS		= -I./headers -I./headers/math -I./headers/utils -I$(PARSER_DIR)/headers
+HEADERS		= -I./headers -I./headers/math -I./headers/openGL -I./headers/utils -I$(PARSER_DIR)/headers
 SRC_DIR		= ./srcs
 OBJ_DIR		= ./objs
 
@@ -16,6 +16,7 @@ SRCS		=	main.cpp \
 				load.cpp \
 				loop.cpp \
 				openGL/openGL.cpp \
+				openGL/Camera.cpp \
 				openGL/glad.c
 
 OBJS_CPP	= $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(filter %.cpp, $(SRCS)))

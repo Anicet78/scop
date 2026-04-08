@@ -379,7 +379,10 @@ inline mat4&	mat4::rotate(float radian, const vec3& vec) {
 
 inline mat4 mat4::identity(void) {
 	mat4 mat;
-	mat.data = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+	mat[0] = 1;
+	mat[5] = 1;
+	mat[10] = 1;
+	mat[15] = 1;
 
 	return (mat);
 }

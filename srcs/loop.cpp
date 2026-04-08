@@ -13,19 +13,13 @@ void	loop(openGL& openGL) {
 
 	glUseProgram(openGL.getShaderProgram());
 
-	// float timeValue = glfwGetTime();
-	// float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
-	// int vertexColorLocation = glGetUniformLocation(openGL.getShaderProgram(), "ourColor");
-	// glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+	openGL.cam.setPosition(vec3(0.0f, 0.0f, -15.0f));
 
-	mat4 model = mat4::identity();
-	model = mat4::rotate(model, (float)glfwGetTime() * radians(50.0f), vec3(0.5f, 1.0f, 0.0f));
+	mat4 model = mat4::rotate(mat4::identity(), (float)glfwGetTime(), vec3(0.5f, 1.0f, 0.0f));
 
-	mat4 view = mat4::identity();
-	view = mat4::translate(view, vec3(0.0f, 0.0f, -5.0f));
+	mat4 view = openGL.cam.lookAt();
 
-	mat4 projection;
-	projection = mat4::perspective(
+	mat4 projection = mat4::perspective(
 		radians(45.0f),
 		static_cast<float>(openGL.getWidth()) / static_cast<float>(openGL.getHeight()),
 		0.1f,

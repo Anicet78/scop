@@ -58,6 +58,13 @@ struct vec3 {
 	vec3	normalized(void) const;
 	bool	equalsEpsilon(const vec3& vec, float epsilon = FT_EPSILON) const;
 
+	static vec3	up(void);
+	static vec3	down(void);
+	static vec3	right(void);
+	static vec3	left(void);
+	static vec3	front(void);
+	static vec3	back(void);
+
 };
 
 # include "vec2.hpp"
@@ -293,6 +300,36 @@ inline bool	vec3::equalsEpsilon(const vec3& vec, float epsilon) const
 inline vec3 operator*(const float scalar, const vec3& vec)
 {
 	return (vec * scalar);
+}
+
+inline vec3	vec3::up(void)
+{
+	return (vec3(0, 1, 0));
+}
+
+inline vec3	vec3::down(void)
+{
+	return (vec3(0, -1, 0));
+}
+
+inline vec3	vec3::right(void)
+{
+	return (vec3(1, 0, 0));
+}
+
+inline vec3	vec3::left(void)
+{
+	return (vec3(-1, 0, 0));
+}
+
+inline vec3	vec3::front(void)
+{
+	return (vec3(0, 0, 1));
+}
+
+inline vec3	vec3::back(void)
+{
+	return (vec3(0, 0, -1));
 }
 
 inline std::ostream& operator<<(std::ostream& os, const vec3& v)

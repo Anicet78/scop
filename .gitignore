@@ -10,3 +10,6 @@ objs/
 # Binaries
 *.out
 scop
+
+# Scenes
+scenes/
