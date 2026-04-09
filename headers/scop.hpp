@@ -12,6 +12,9 @@
 
 int		parseFile(std::string_view fileName, ObjParser& objParser);
 void	loadScene(ObjParser& objParser, openGL& openGL);
+void	setup(openGL& openGL);
 void	loop(openGL& openGL);
+
+void	processInput(openGL& openGL);
 
 #endif // !SCOP_HPP

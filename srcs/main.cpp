@@ -17,7 +17,7 @@ int	main(int ac, char **av)
 
 	loadScene(objParser, openGL);
 
-	openGL.cam.setPosition(vec3(0.0f, 0.0f, -15.0f));
+	setup(openGL);
 
 	openGL.Loop(&loop);
 

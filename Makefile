@@ -14,6 +14,7 @@ CXXFLAGS += $(HEADERS)
 
 SRCS		=	main.cpp \
 				load.cpp \
+				setup.cpp \
 				loop.cpp \
 				openGL/openGL.cpp \
 				openGL/Camera.cpp \

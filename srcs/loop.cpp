@@ -1,43 +1,5 @@
 #include "scop.hpp"
 
-void*	movement_enabled;
-
-void processInput(openGL& openGL) {
-	GLFWwindow*	window = openGL.getWindow();
-
-	if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, true);
-
-	float	cameraSpeed = 0.05f;
-	vec3	cameraPos = openGL.cam.getPosition();
-	vec3	cameraTarget = openGL.cam.getTarget();
-	vec3	cameraUp = vec3::up();
-	vec3	forward = (cameraTarget - cameraPos).normalized();
-
-	if (forward.lengthSquared() <= FT_EPSILON * FT_EPSILON)
-		forward = vec3::front();
-
-	vec3	right = -cameraUp.cross(forward).normalized();
-	vec3	up = right.cross(forward).normalized();
-	vec3	delta;
-
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		delta += cameraSpeed * forward;
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		delta -= cameraSpeed * forward;
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		delta -= right * cameraSpeed;
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		delta += right * cameraSpeed;
-	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-		delta += up * cameraSpeed;
-	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-		delta -= up * cameraSpeed;
-
-	openGL.cam.setPosition(cameraPos + delta);
-	openGL.cam.setTarget(cameraTarget + delta);
-}
-
 void	loop(openGL& openGL) {
 	processInput(openGL);
 
@@ -51,7 +13,7 @@ void	loop(openGL& openGL) {
 	mat4 view = openGL.cam.lookAt();
 
 	mat4 projection = mat4::perspective(
-		radians(45.0f),
+		openGL.cam.getRadFOV(),
 		static_cast<float>(openGL.getWidth()) / static_cast<float>(openGL.getHeight()),
 		0.1f,
 		100.0f
