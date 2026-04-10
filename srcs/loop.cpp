@@ -8,7 +8,7 @@ void	loop(openGL& openGL) {
 
 	glUseProgram(openGL.getShaderProgram());
 
-	mat4 model = mat4::identity();
+	mat4 model = mat4::identity().translate(vec3(0, 0, -5)).rotate(glfwGetTime() * radians(45.0f), vec3(0, 1, 0));
 
 	mat4 view = openGL.cam.lookAt();
 
@@ -27,6 +27,9 @@ void	loop(openGL& openGL) {
 
 	unsigned int projectionLoc = glGetUniformLocation(openGL.getShaderProgram(), "projection");
 	glUniformMatrix4fv(projectionLoc, 1, GL_TRUE, &projection.data[0]);
+
+	unsigned int renderTypeLoc = glGetUniformLocation(openGL.getShaderProgram(), "renderType");
+	glUniform1ui(renderTypeLoc, renderType);
 
 	glBindVertexArray(openGL.getVAO());
 	glDrawElements(GL_TRIANGLES, openGL.getIndexCount(), GL_UNSIGNED_INT, nullptr);

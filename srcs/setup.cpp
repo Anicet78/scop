@@ -1,9 +1,12 @@
 #include "scop.hpp"
 
-static openGL*	openGL_ptr = NULL;
+static openGL* openGL_ptr = NULL;
+u8 renderType = render_type::COLORED;
 
 void processInput(openGL& openGL) {
 	GLFWwindow*	window = openGL.getWindow();
+	static int	prevCtrlState = GLFW_RELEASE;
+	static int	prevTabState = GLFW_RELEASE;
 
 	if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
@@ -33,10 +36,20 @@ void processInput(openGL& openGL) {
 		delta += up * cameraSpeed;
 	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 		delta -= up * cameraSpeed;
-	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+
+	int ctrlState = glfwGetKey(window, GLFW_KEY_LEFT_CONTROL);
+	if (ctrlState == GLFW_PRESS && prevCtrlState == GLFW_RELEASE)
 		openGL.cam.setSpeed(0.09);
-	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_RELEASE)
+	else if (ctrlState == GLFW_RELEASE && prevCtrlState == GLFW_PRESS)
 		openGL.cam.setSpeed(0.05);
+	prevCtrlState = ctrlState;
+
+	int tabState = glfwGetKey(window, GLFW_KEY_TAB);
+	if (tabState == GLFW_RELEASE && prevTabState == GLFW_PRESS) {
+		if (++renderType > render_type::IMAGE)
+			renderType = render_type::COLORED;
+	}
+	prevTabState = tabState;
 
 	openGL.cam.setPosition(cameraPos + delta);
 }
@@ -113,7 +126,7 @@ void scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
 void	setup(openGL& openGL) {
 	openGL_ptr = &openGL;
 
-	openGL.cam.setPosition(vec3(0.0f, 0.0f, -15.0f));
+	openGL.cam.setPosition(vec3(0.0f, 0.0f, -5.0f));
 	openGL.cam.setDirection(vec3::front());
 	openGL.cam.setDegFOV(45.0f);
 	openGL.cam.setSensitivity(0.05f);

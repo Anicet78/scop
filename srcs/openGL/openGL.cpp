@@ -75,6 +75,7 @@ bool	openGL::Init(std::string_view windowName, u32 width, u32 height) {
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 		std::cerr << COLOR_LIGHT_RED << "Error : could not initialize GLAD" << COLOR_NC << std::endl;
+		glfwTerminate();
 		return false;
 	}
 
@@ -143,6 +144,8 @@ unsigned int	openGL::CompileShader(std::string_view path, int shaderType, std::s
 	{
 		glGetShaderInfoLog(shader, 512, NULL, infoLog);
 		std::cout << "ERROR::SHADER::" << shaderName << "::COMPILATION_FAILED\n" << infoLog << std::endl;
+		glfwTerminate();
+		std::exit(1);
 	}
 
 	return (shader);
@@ -165,6 +168,8 @@ void	openGL::CreateShaders(void) {
 	if(!success) {
 		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
 		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+		glfwTerminate();
+		std::exit(1);
 	}
 
 	glDeleteShader(vertexShader);
