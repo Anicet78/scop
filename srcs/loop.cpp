@@ -8,7 +8,9 @@ void	loop(openGL& openGL) {
 
 	glUseProgram(openGL.getShaderProgram());
 
-	mat4 model = mat4::identity().translate(vec3(0, 0, -5)).rotate(glfwGetTime() * radians(45.0f), vec3(0, 1, 0));
+	float angle = glfwGetTime() * radians(45.0f);
+	mat4 rotation = mat4::identity().rotate(angle, vec3(0, 1, 0));
+	mat4 model = modelToPivot * rotation * modelFromPivot;
 
 	mat4 view = openGL.cam.lookAt();
 

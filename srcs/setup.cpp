@@ -2,6 +2,8 @@
 
 static openGL* openGL_ptr = NULL;
 u8 renderType = render_type::COLORED;
+mat4 modelToPivot = mat4::identity();
+mat4 modelFromPivot = mat4::identity();
 
 void processInput(openGL& openGL) {
 	GLFWwindow*	window = openGL.getWindow();
@@ -123,7 +125,22 @@ void scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
 	openGL_ptr->cam.setDegFOV(fov);
 }
 
-void	setup(openGL& openGL) {
+vec3	findModelCenter(ObjParser& objParser) {
+	float	x = 0;
+	float	y = 0;
+	float	z = 0;
+	float	lenInv = 1.0f / static_cast<float>(objParser.raw.vertices.size());
+
+	for (Vertex vertex: objParser.raw.vertices) {
+		x += vertex.x * lenInv;
+		y += vertex.y * lenInv;
+		z += vertex.z * lenInv;
+	}
+
+	return vec3(x, y, z);
+}
+
+void	setup(openGL& openGL, ObjParser& objParser) {
 	openGL_ptr = &openGL;
 
 	openGL.cam.setPosition(vec3(0.0f, 0.0f, -5.0f));
@@ -135,4 +152,8 @@ void	setup(openGL& openGL) {
 	glfwSetInputMode(openGL.getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSetCursorPosCallback(openGL.getWindow(), &mouseCallback);
 	glfwSetScrollCallback(openGL.getWindow(), &scrollCallback);
+
+	vec3 pivot = findModelCenter(objParser);
+	modelToPivot.translate(pivot);
+	modelFromPivot.translate(-pivot);
 }

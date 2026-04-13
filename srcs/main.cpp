@@ -17,7 +17,7 @@ int	main(int ac, char **av)
 
 	loadScene(objParser, openGL);
 
-	setup(openGL);
+	setup(openGL, objParser);
 
 	openGL.Loop(&loop);
 

@@ -17,10 +17,12 @@ enum render_type {
 };
 
 extern u8 renderType;
+extern mat4 modelToPivot;
+extern mat4 modelFromPivot;
 
 int		parseFile(std::string_view fileName, ObjParser& objParser);
 void	loadScene(ObjParser& objParser, openGL& openGL);
-void	setup(openGL& openGL);
+void	setup(openGL& openGL, ObjParser& objParser);
 void	loop(openGL& openGL);
 
 void	processInput(openGL& openGL);
