@@ -30,8 +30,14 @@ void	loop(openGL& openGL) {
 	unsigned int projectionLoc = glGetUniformLocation(openGL.getShaderProgram(), "projection");
 	glUniformMatrix4fv(projectionLoc, 1, GL_TRUE, &projection.data[0]);
 
-	unsigned int renderTypeLoc = glGetUniformLocation(openGL.getShaderProgram(), "renderType");
-	glUniform1ui(renderTypeLoc, renderType);
+	unsigned int coloredOpacityLoc = glGetUniformLocation(openGL.getShaderProgram(), "coloredOpacity");
+	glUniform1f(coloredOpacityLoc, coloredOpacity);
+
+	unsigned int smoothOpacityLoc = glGetUniformLocation(openGL.getShaderProgram(), "smoothOpacity");
+	glUniform1f(smoothOpacityLoc, smoothOpacity);
+
+	unsigned int imgOpacityLoc = glGetUniformLocation(openGL.getShaderProgram(), "imgOpacity");
+	glUniform1f(imgOpacityLoc, imgOpacity);
 
 	glBindVertexArray(openGL.getVAO());
 	glDrawElements(GL_TRIANGLES, openGL.getIndexCount(), GL_UNSIGNED_INT, nullptr);

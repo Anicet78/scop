@@ -2,6 +2,9 @@
 
 static openGL* openGL_ptr = NULL;
 u8 renderType = render_type::COLORED;
+float coloredOpacity = 1.0f;
+float smoothOpacity = 0.0f;
+float imgOpacity = 0.0f;
 mat4 modelToPivot = mat4::identity();
 mat4 modelFromPivot = mat4::identity();
 
@@ -52,6 +55,41 @@ void processInput(openGL& openGL) {
 			renderType = render_type::COLORED;
 	}
 	prevTabState = tabState;
+
+	if (renderType == render_type::COLORED) {
+		if (coloredOpacity < 1.0f)
+			coloredOpacity += 0.05f;
+
+		if (imgOpacity > 0.0f)
+			imgOpacity -= 0.05f;
+		if (smoothOpacity > 0.0f)
+			smoothOpacity -= 0.05f;
+	}
+	else if (renderType == render_type::SMOOTH) {
+		if (smoothOpacity < 1.0f)
+			smoothOpacity += 0.05f;
+
+		if (coloredOpacity > 0.0f)
+			coloredOpacity -= 0.05f;
+		if (imgOpacity > 0.0f)
+			imgOpacity -= 0.05f;
+	}
+	else if (renderType == render_type::IMAGE) {
+		if (imgOpacity < 1.0f)
+			imgOpacity += 0.05f;
+
+		if (coloredOpacity > 0.0f)
+			coloredOpacity -= 0.05f;
+		if (smoothOpacity > 0.0f)
+			smoothOpacity -= 0.05f;
+	}
+
+	if (coloredOpacity < 0.0f)
+		coloredOpacity = 0.0f;
+	if (smoothOpacity < 0.0f)
+		smoothOpacity = 0.0f;
+	if (imgOpacity < 0.0f)
+		imgOpacity = 0.0f;
 
 	openGL.cam.setPosition(cameraPos + delta);
 }

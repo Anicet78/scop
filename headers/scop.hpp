@@ -16,9 +16,12 @@ enum render_type {
 	IMAGE
 };
 
-extern u8 renderType;
-extern mat4 modelToPivot;
-extern mat4 modelFromPivot;
+extern u8		renderType;
+extern float	coloredOpacity;
+extern float	smoothOpacity;
+extern float	imgOpacity;
+extern mat4		modelToPivot;
+extern mat4		modelFromPivot;
 
 int		parseFile(std::string_view fileName, ObjParser& objParser);
 void	loadScene(ObjParser& objParser, openGL& openGL);
