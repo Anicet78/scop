@@ -35,24 +35,23 @@ static void resolveMissingNormals(std::vector<vec3>& normals, const std::vector<
 	for (Face& face : faces) {
 		if (face.elements.size() < 3) continue;
 
-		const vec3 faceNormal	= faceNormalFromElements(vertices, face);
-		const bool needsNormal	= face.elements[0].vnIndex == 0;
+		const bool needsNormal = face.elements[0].vnIndex == 0;
+		if (!needsNormal)
+			continue;
 
-		u32 vnFallback = 0;
-		if (needsNormal) {
-			auto findNormal = std::find(normals.begin(), normals.end(), faceNormal);
-			if (findNormal == normals.end()) {
-				normals.push_back(faceNormal);
-				vnFallback = normals.size();
-			} else {
-				vnFallback = std::distance(normals.begin(), findNormal) + 1;
-			}
+		const vec3	faceNormal = faceNormalFromElements(vertices, face);
+		u32			vnFallback = 0;
+
+		auto findNormal = std::find(normals.begin(), normals.end(), faceNormal);
+		if (findNormal == normals.end()) {
+			normals.push_back(faceNormal);
+			vnFallback = normals.size();
+		} else {
+			vnFallback = std::distance(normals.begin(), findNormal) + 1;
 		}
 
-		for (FaceElement& faceElement : face.elements) {
-			if (needsNormal)
-				faceElement.vnIndex = vnFallback;
-		}
+		for (FaceElement& faceElement : face.elements)
+			faceElement.vnIndex = vnFallback;
 	}
 }
 
