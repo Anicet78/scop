@@ -169,7 +169,7 @@ vec3	findModelCenter(ObjParser& objParser) {
 	float	z = 0;
 	float	lenInv = 1.0f / static_cast<float>(objParser.raw.vertices.size());
 
-	for (Vertex vertex: objParser.raw.vertices) {
+	for (parser::Vertex vertex: objParser.raw.vertices) {
 		x += vertex.x * lenInv;
 		y += vertex.y * lenInv;
 		z += vertex.z * lenInv;

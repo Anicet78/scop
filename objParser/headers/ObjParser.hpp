@@ -7,15 +7,30 @@
 # include "Elements.hpp"
 # include "MtlParser.hpp"
 
+using parser::Face;
+using parser::FaceElement;
+using parser::GetIndex;
+using parser::Line;
+using parser::LineElement;
+using parser::Material;
+using parser::MaterialList;
+using parser::MtlParser;
+using parser::Normal;
+using parser::ParamSpaceVertex;
+using parser::Point;
+using parser::StrToInt;
+using parser::ThrowError;
+using parser::UV;
+
 // Raw Object File
 struct OBJRaw {
-	std::vector<Vertex>				vertices;
-	std::vector<UV>					uvs;
-	std::vector<Normal>				normals;
-	std::vector<ParamSpaceVertex>	paramSpaceVertices;
-	std::vector<Face>				faces;
-	std::vector<Line>				lines;
-	std::vector<Point>				points;
+	std::vector<parser::Vertex>				vertices;
+	std::vector<parser::UV>					uvs;
+	std::vector<parser::Normal>				normals;
+	std::vector<parser::ParamSpaceVertex>	paramSpaceVertices;
+	std::vector<parser::Face>				faces;
+	std::vector<parser::Line>				lines;
+	std::vector<parser::Point>				points;
 };
 
 // Groups
@@ -66,13 +81,13 @@ class ObjParser {
 		void	SetMergingGroup(std::istringstream& ss);
 		void	AddToGroups(std::string& prefix);
 
-		Vertex				NewVertex(std::istringstream& ss);
-		UV					NewUV(std::istringstream& ss);
-		Normal				NewNormal(std::istringstream& ss);
-		ParamSpaceVertex	NewParamSpaceVertex(std::istringstream& ss);
-		Face				NewFace(std::istringstream& ss);
-		Line				NewLine(std::istringstream& ss);
-		Point				NewPoint(std::istringstream& ss);
+		parser::Vertex				NewVertex(std::istringstream& ss);
+		parser::UV					NewUV(std::istringstream& ss);
+		parser::Normal				NewNormal(std::istringstream& ss);
+		parser::ParamSpaceVertex	NewParamSpaceVertex(std::istringstream& ss);
+		parser::Face				NewFace(std::istringstream& ss);
+		parser::Line				NewLine(std::istringstream& ss);
+		parser::Point				NewPoint(std::istringstream& ss);
 
 		void	FillRaw(std::ifstream& ifs);
 
@@ -80,7 +95,7 @@ class ObjParser {
 		OBJRaw				raw;
 		ObjectList			objects;
 		SmoothingGroupList	smoothingGroups;
-		MaterialList		materials;
+		parser::MaterialList		materials;
 
 		ObjParser(void);
 		void	ParseFile(std::string filename);

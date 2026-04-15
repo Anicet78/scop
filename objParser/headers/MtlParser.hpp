@@ -4,6 +4,8 @@
 # include "parser.hpp"
 # include "Material.hpp"
 
+namespace parser {
+
 using MaterialList = std::unordered_map<std::string, Material> ;
 
 class MtlParser {
@@ -52,5 +54,7 @@ class MtlParser {
 		static MaterialList	ImportMtl(std::string filename, std::string& path);
 
 };
+
+}
 
 #endif // !MTL_PARSER_HPP

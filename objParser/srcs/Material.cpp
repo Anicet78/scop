@@ -1,5 +1,7 @@
 #include "MtlParser.hpp"
 
+namespace parser {
+
 Material::Material(void)
 {
 	this->illuminationModel = 2;
@@ -58,4 +60,6 @@ void	Material::Print(void) const
 	std::cout << "Shininess: " << this->shininess << std::endl;
 	std::cout << "Sharpness: " << this->sharpness << std::endl;
 	std::cout << "Refractive index: " << this->refractiveIndex << std::endl;
+}
+
 }

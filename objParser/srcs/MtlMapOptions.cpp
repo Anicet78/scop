@@ -1,5 +1,7 @@
 #include "MtlParser.hpp"
 
+namespace parser {
+
 bool	MtlParser::ParseOnOff(std::istringstream& ss, std::string& option, std::string& statement)
 {
 	if (option == "cc" && statement != "map_Ka" && statement != "map_Kd" && statement != "map_Ks" && statement != "map_Ke" && statement != "norm" && statement != "refl")
@@ -118,4 +120,6 @@ void	MtlParser::ParseMapOptions(std::string& option, std::istringstream& ss, Tex
 		this->SetResolution(ss, map, option, statement);
 	else
 		ThrowError("Option not recognized in `" + statement + "`", option, this->countLines, this->fileName);
+}
+
 }

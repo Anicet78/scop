@@ -5,6 +5,8 @@
 # include "vec3.hpp"
 # include "vec4.hpp"
 
+namespace parser {
+
 using	Vertex = vec4;
 using	UV = vec3;
 using	Normal = vec3;
@@ -17,6 +19,18 @@ struct FaceElement {
 
 	FaceElement(uint32_t v, uint32_t vt, uint32_t vn) {
 		this->vIndex = v; this->vtIndex = vt; this->vnIndex = vn;
+	}
+
+	bool	operator==(const FaceElement& other) const {
+		return (
+			this->vIndex == other.vIndex
+			&& this->vtIndex == other.vtIndex
+			&& this->vnIndex == other.vnIndex
+		);
+	}
+
+	bool	operator!=(const FaceElement& other) const {
+		return (!(*this == other));
 	}
 
 	friend std::ostream&	operator<<(std::ostream &stream, const FaceElement& faceElem)
@@ -95,6 +109,8 @@ uint32_t	GetIndex(std::vector<T>& vector, int index)
 		return (vector.size() - (-index - 1));
 	}
 	return (static_cast<int>(vector.size()) < index ? 0 : index);
+}
+
 }
 
 #endif // !ELEMENTS_HPP

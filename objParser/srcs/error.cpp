@@ -1,5 +1,7 @@
 #include "ObjParser.hpp"
 
+namespace parser {
+
 float	StrToFloat(const std::string& str, std::string statement, size_t countLine, std::string& fileName)
 {
 	float f;
@@ -62,4 +64,6 @@ int	StrToInt(const std::string& str, std::string statement, size_t countLine, st
 	if (!token.empty() && token.back() == '\r')
 		token.pop_back();
 	throw std::runtime_error("An error has occured from '" + fileName +":" + std::to_string(line) + "': " + error + " on token '" + token + "'");
+}
+
 }

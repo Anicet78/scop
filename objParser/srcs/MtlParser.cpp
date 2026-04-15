@@ -1,5 +1,7 @@
 #include "MtlParser.hpp"
 
+namespace parser {
+
 MtlParser::MtlParser(void)
 {
 	this->countLines = 0;
@@ -423,4 +425,6 @@ MaterialList	MtlParser::ImportMtl(std::string filename, std::string& path)
 
 	ifs.close();
 	return (parser.materials);
+}
+
 }

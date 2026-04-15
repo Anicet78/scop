@@ -1,5 +1,10 @@
 #include "ObjParser.hpp"
 
+using parser::Material;
+using parser::MaterialList;
+using parser::MtlParser;
+using parser::ThrowError;
+
 ObjParser::ObjParser(void)
 {
 	this->countLines = 0;

@@ -1,5 +1,7 @@
 #include "ObjParser.hpp"
 
+using parser::Vertex;
+
 Vertex	ObjParser::NewVertex(std::istringstream& ss)
 {
 	float x, y, z, w = 1.0f;

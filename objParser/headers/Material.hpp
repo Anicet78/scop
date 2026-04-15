@@ -5,6 +5,8 @@
 # include "vec4.hpp"
 # include <vector>
 
+namespace parser {
+
 enum class ColorFormat { RGB, XYZ, Spectral, None };
 
 struct ParsedColor {
@@ -119,5 +121,7 @@ struct Material {
 	void	Print(void) const;
 
 };
+
+}
 
 #endif // !MATERIAL_HPP
