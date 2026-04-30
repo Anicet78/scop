@@ -1,0 +1,4 @@
+srcs/openGL/glad.c linguist-vendored
+headers/openGL/glad/** linguist-vendored
+headers/openGL/KHR/** linguist-vendored
+headers/openGL/stb_image.h linguist-vendored
