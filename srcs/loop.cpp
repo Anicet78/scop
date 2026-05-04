@@ -8,7 +8,19 @@ void	loop(openGL& openGL) {
 
 	glUseProgram(openGL.getShaderProgram());
 
-	float angle = glfwGetTime() * radians(45.0f);
+	static double lastTime = 0.0;
+	static double accumulatedAngle = 0.0;
+
+	double now = chrono.getElapsedSeconds();
+	if (now < lastTime) {
+		lastTime = now;
+		accumulatedAngle = 0.0;
+	}
+	const double delta = now - lastTime;
+	lastTime = now;
+	accumulatedAngle += delta * radians(45.0f * rotationDirection) * rotationSpeed;
+
+	float angle = static_cast<float>(accumulatedAngle);
 	mat4 rotation = mat4::identity().rotate(angle, vec3(0, 1, 0));
 	mat4 model = modelToPivot * rotation * modelFromPivot;
 

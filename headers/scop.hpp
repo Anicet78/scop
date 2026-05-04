@@ -2,7 +2,6 @@
 # define SCOP_HPP
 
 # include <cstdio>
-# include <chrono>
 # include <unordered_map>
 # include <algorithm>
 # include "openGL/openGL.hpp"
@@ -11,6 +10,7 @@
 # include "vec3.hpp"
 # include "vec4.hpp"
 # include "mat4.hpp"
+# include "Chrono.hpp"
 
 enum render_type {
 	COLORED,
@@ -18,12 +18,15 @@ enum render_type {
 	IMAGE
 };
 
+extern Chrono	chrono;
 extern u8		renderType;
 extern float	coloredOpacity;
 extern float	smoothOpacity;
 extern float	imgOpacity;
 extern mat4		modelToPivot;
 extern mat4		modelFromPivot;
+extern float	rotationSpeed;
+extern i8		rotationDirection;
 
 struct Vertex {
 	vec3	pos;

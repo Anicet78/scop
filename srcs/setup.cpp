@@ -1,20 +1,19 @@
 #include "scop.hpp"
 
 static openGL* openGL_ptr = NULL;
+Chrono chrono;
 u8 renderType = render_type::COLORED;
 float coloredOpacity = 1.0f;
 float smoothOpacity = 0.0f;
 float imgOpacity = 0.0f;
 mat4 modelToPivot = mat4::identity();
 mat4 modelFromPivot = mat4::identity();
+float rotationSpeed = 0.9f;
+i8 rotationDirection = 1;
 
-void processInput(openGL& openGL) {
+static void processMovement(openGL& openGL) {
 	GLFWwindow*	window = openGL.getWindow();
 	static int	prevCtrlState = GLFW_RELEASE;
-	static int	prevTabState = GLFW_RELEASE;
-
-	if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, true);
 
 	float	cameraSpeed = openGL.cam.getSpeed();
 	vec3	cameraPos = openGL.cam.getPosition();
@@ -48,6 +47,13 @@ void processInput(openGL& openGL) {
 	else if (ctrlState == GLFW_RELEASE && prevCtrlState == GLFW_PRESS)
 		openGL.cam.setSpeed(0.05);
 	prevCtrlState = ctrlState;
+
+	openGL.cam.setPosition(cameraPos + delta);
+}
+
+static void processOpacity(openGL& openGL) {
+	GLFWwindow*	window = openGL.getWindow();
+	static int	prevTabState = GLFW_RELEASE;
 
 	int tabState = glfwGetKey(window, GLFW_KEY_TAB);
 	if (tabState == GLFW_RELEASE && prevTabState == GLFW_PRESS) {
@@ -90,8 +96,51 @@ void processInput(openGL& openGL) {
 		smoothOpacity = 0.0f;
 	if (imgOpacity < 0.0f)
 		imgOpacity = 0.0f;
+}
 
-	openGL.cam.setPosition(cameraPos + delta);
+static void processRotation(openGL& openGL) {
+	GLFWwindow*	window = openGL.getWindow();
+	static bool	rotating = true;
+	static int	prevAltState = GLFW_RELEASE;
+
+	int altState = glfwGetKey(window, GLFW_KEY_LEFT_ALT);
+	if (altState == GLFW_RELEASE && prevAltState == GLFW_PRESS) {
+		rotating = !rotating;
+		if (!rotating)
+			chrono.Stop();
+		else
+			chrono.Resume();
+	}
+	prevAltState = altState;
+
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+		if (rotationSpeed < 10.0)
+			rotationSpeed += 0.05;
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+		if (rotationSpeed > 0.4)
+			rotationSpeed -= 0.05;
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+		rotationDirection = 1;
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+		rotationDirection = -1;
+	}
+}
+
+void processInput(openGL& openGL) {
+	GLFWwindow*	window = openGL.getWindow();
+
+	if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, true);
+
+	processMovement(openGL);
+	processOpacity(openGL);
+	processRotation(openGL);
 }
 
 void mouseCallback(GLFWwindow* window, double xpos, double ypos) {
@@ -180,6 +229,7 @@ vec3	findModelCenter(ObjParser& objParser) {
 
 void	setup(openGL& openGL, ObjParser& objParser) {
 	openGL_ptr = &openGL;
+	chrono.Start();
 
 	openGL.cam.setPosition(vec3(0.0f, 0.0f, -5.0f));
 	openGL.cam.setDirection(vec3::front());
