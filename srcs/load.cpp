@@ -67,7 +67,7 @@ void	loadScene(ObjParser& objParser, openGL& openGL) {
 	auto start = std::chrono::steady_clock::now();
 	resolveMissingNormals(normals, objParser.raw.vertices, objParser.raw.faces);
 	auto end = std::chrono::steady_clock::now();
-	std::cout << "Time to resolve: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << std::endl;
+	std::cout << "Time to resolve missing normals: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << std::endl << std::endl;
 
 	std::vector<Vertex> vertices;
 	std::vector<u32> indices;

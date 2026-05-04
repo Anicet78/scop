@@ -40,6 +40,7 @@ void	loop(openGL& openGL) {
 	glUniform1f(imgOpacityLoc, imgOpacity);
 
 	glBindVertexArray(openGL.getVAO());
+	glBindTexture(GL_TEXTURE_2D, openGL.getTexture());
 	glDrawElements(GL_TRIANGLES, openGL.getIndexCount(), GL_UNSIGNED_INT, nullptr);
 
 	glfwSwapBuffers(openGL.getWindow());

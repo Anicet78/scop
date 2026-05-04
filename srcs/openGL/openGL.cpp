@@ -1,3 +1,5 @@
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 #include "openGL.hpp"
 
 //constructors/destructors---------------------------------
@@ -34,6 +36,10 @@ u32	openGL::getShaderProgram(void) {
 
 u32	openGL::getVAO(void) {
 	return this->_VAO;
+}
+
+u32	openGL::getTexture(void) {
+	return this->_texture;
 }
 
 u32	openGL::getIndexCount(void) {
@@ -215,6 +221,34 @@ void	openGL::LoadScene(
 	glBindVertexArray(0);
 	this->_VAO = VAO;
 	this->_indexCount = static_cast<u32>(indexBufferSize / sizeof(u32));
+}
+
+void	openGL::LoadImage(std::string imagePath) {
+	std::error_code ec;
+	const std::filesystem::path exePath = std::filesystem::read_symlink("/proc/self/exe", ec);
+	if (!ec)
+		imagePath = exePath.parent_path() / imagePath;
+
+	int width, height, nrChannels;
+	unsigned char *data = stbi_load(imagePath.c_str(), &width, &height, &nrChannels, 0);
+	if (!data) {
+		glfwTerminate();
+		std::exit(1);
+	}
+
+	glGenTextures(1, &this->_texture);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, this->_texture);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	stbi_image_free(data);
 }
 
 void openGL::Loop(void (*loop)(openGL&)) {

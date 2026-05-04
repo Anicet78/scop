@@ -41,11 +41,11 @@ class openGL {
 		u32	_width;
 		u32	_height;
 
-		GLFWwindow* _window;
+		GLFWwindow*	_window;
 		u32			_shaderProgram;
 		u32			_VAO;
+		u32			_texture;
 		u32			_indexCount;
-
 
 		static u32			CompileShader(std::string_view path, int shaderType, std::string_view shaderName);
 		static std::string	OpenShader(std::string_view fileName);
@@ -64,6 +64,7 @@ class openGL {
 		GLFWwindow*	getWindow(void);
 		u32			getShaderProgram(void);
 		u32			getVAO(void);
+		u32			getTexture(void);
 		u32			getIndexCount(void);
 
 		bool	Init(std::string_view windowName = "GLFW", u32 width = 1920, u32 height = 1080);
@@ -75,6 +76,7 @@ class openGL {
 			const std::vector<VertexAttribDesc>& attributes,
 			GLenum usage = GL_STATIC_DRAW
 		);
+		void	LoadImage(std::string imagePath);
 		void	Loop(void (*loop)(openGL&));
 
 };

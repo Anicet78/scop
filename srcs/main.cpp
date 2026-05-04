@@ -16,6 +16,7 @@ int	main(int ac, char **av)
 		return (1);
 
 	loadScene(objParser, openGL);
+	openGL.LoadImage("textures/comete.jpg");
 
 	setup(openGL, objParser);
 
