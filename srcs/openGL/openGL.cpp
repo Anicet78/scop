@@ -229,6 +229,7 @@ void	openGL::LoadImage(std::string imagePath) {
 	if (!ec)
 		imagePath = exePath.parent_path() / imagePath;
 
+	stbi_set_flip_vertically_on_load(true);
 	int width, height, nrChannels;
 	unsigned char *data = stbi_load(imagePath.c_str(), &width, &height, &nrChannels, 0);
 	if (!data) {
@@ -236,17 +237,29 @@ void	openGL::LoadImage(std::string imagePath) {
 		std::exit(1);
 	}
 
+	GLint internalFormat = GL_RGB;
+	GLenum dataFormat = GL_RGB;
+	if (nrChannels == 1) {
+		internalFormat = GL_RED;
+		dataFormat = GL_RED;
+	} else if (nrChannels == 4) {
+		internalFormat = GL_RGBA;
+		dataFormat = GL_RGBA;
+	}
+
 	glGenTextures(1, &this->_texture);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, this->_texture);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
 	glGenerateMipmap(GL_TEXTURE_2D);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 
 	stbi_image_free(data);
 }
