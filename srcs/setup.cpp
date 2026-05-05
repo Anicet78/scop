@@ -10,12 +10,19 @@ mat4 modelToPivot = mat4::identity();
 mat4 modelFromPivot = mat4::identity();
 float rotationSpeed = 0.9f;
 i8 rotationDirection = 1;
+static i8	moveObject = 1;
+static bool	mouseInitialized = false;
+static float	lastMouseX = 0.0f;
+static float	lastMouseY = 0.0f;
+static float	mouseYaw = 0.0f;
+static float	mousePitch = 0.0f;
 
 static void processMovement(openGL& openGL) {
 	GLFWwindow*	window = openGL.getWindow();
 	static int	prevCtrlState = GLFW_RELEASE;
+	static int	prevAltState = GLFW_RELEASE;
 
-	float	cameraSpeed = openGL.cam.getSpeed();
+	float	cameraSpeed = openGL.cam.getSpeed() * moveObject;
 	vec3	cameraPos = openGL.cam.getPosition();
 	vec3	cameraDirection = openGL.cam.getDirection();
 	vec3	cameraUp = vec3::up();
@@ -29,17 +36,29 @@ static void processMovement(openGL& openGL) {
 	vec3	delta;
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		delta += cameraSpeed * forward;
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 		delta -= cameraSpeed * forward;
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		delta += cameraSpeed * forward;
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		delta -= right * cameraSpeed;
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		delta += right * cameraSpeed;
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		delta -= right * cameraSpeed;
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-		delta += up * cameraSpeed;
-	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 		delta -= up * cameraSpeed;
+	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+		delta += up * cameraSpeed;
+
+	int altState = glfwGetKey(window, GLFW_KEY_RIGHT_ALT);
+	if (altState == GLFW_PRESS && prevAltState == GLFW_RELEASE) {
+		moveObject = -moveObject;
+		if (moveObject == 1)
+			glfwSetInputMode(openGL.getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		else {
+			glfwSetInputMode(openGL.getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+			mouseInitialized = false;
+		}
+	}
+	prevAltState = altState;
 
 	int ctrlState = glfwGetKey(window, GLFW_KEY_LEFT_CONTROL);
 	if (ctrlState == GLFW_PRESS && prevCtrlState == GLFW_RELEASE)
@@ -145,50 +164,44 @@ void processInput(openGL& openGL) {
 
 void mouseCallback(GLFWwindow* window, double xpos, double ypos) {
 	(void)window;
-	if (!openGL_ptr)
+	if (!openGL_ptr || moveObject == 1)
 		return ;
 
-	static bool		initialized = false;
-	static float	lastX = 0.0f;
-	static float	lastY = 0.0f;
-	static float	yaw = 0.0f;
-	static float	pitch = 0.0f;
-
-	if (!initialized) {
-		lastX = static_cast<float>(xpos);
-		lastY = static_cast<float>(ypos);
+	if (!mouseInitialized) {
+		lastMouseX = static_cast<float>(xpos);
+		lastMouseY = static_cast<float>(ypos);
 
 		vec3 currentDir = openGL_ptr->cam.getDirection().normalized();
 		if (currentDir.lengthSquared() <= FT_EPSILON * FT_EPSILON)
 			currentDir = vec3::front();
 
-		yaw = degrees(atan2f(currentDir.z, currentDir.x));
-		pitch = degrees(asinf(currentDir.y));
-		initialized = true;
+		mouseYaw = degrees(atan2f(currentDir.z, currentDir.x));
+		mousePitch = degrees(asinf(currentDir.y));
+		mouseInitialized = true;
 		return ;
 	}
 
-	float xoffset = static_cast<float>(xpos) - lastX;
-	float yoffset = lastY - static_cast<float>(ypos);
-	lastX = static_cast<float>(xpos);
-	lastY = static_cast<float>(ypos);
+	float xoffset = static_cast<float>(xpos) - lastMouseX;
+	float yoffset = lastMouseY - static_cast<float>(ypos);
+	lastMouseX = static_cast<float>(xpos);
+	lastMouseY = static_cast<float>(ypos);
 
 	float sensitivity = openGL_ptr->cam.getSensitivity();
 	xoffset *= sensitivity;
 	yoffset *= sensitivity;
 
-	yaw += xoffset;
-	pitch += yoffset;
+	mouseYaw += xoffset;
+	mousePitch += yoffset;
 
-	if(pitch > 89.0f)
-		pitch = 89.0f;
-	if(pitch < -89.0f)
-		pitch = -89.0f;
+	if(mousePitch > 89.0f)
+		mousePitch = 89.0f;
+	if(mousePitch < -89.0f)
+		mousePitch = -89.0f;
 
 	vec3 front;
-	front.x = cosf(radians(yaw)) * cosf(radians(pitch));
-	front.y = sinf(radians(pitch));
-	front.z = sinf(radians(yaw)) * cosf(radians(pitch));
+	front.x = cosf(radians(mouseYaw)) * cosf(radians(mousePitch));
+	front.y = sinf(radians(mousePitch));
+	front.z = sinf(radians(mouseYaw)) * cosf(radians(mousePitch));
 	openGL_ptr->cam.setDirection(front.normalized());
 }
 
@@ -237,7 +250,6 @@ void	setup(openGL& openGL, ObjParser& objParser) {
 	openGL.cam.setSensitivity(0.05f);
 	openGL.cam.setSpeed(0.06f);
 
-	glfwSetInputMode(openGL.getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSetCursorPosCallback(openGL.getWindow(), &mouseCallback);
 	glfwSetScrollCallback(openGL.getWindow(), &scrollCallback);
 
