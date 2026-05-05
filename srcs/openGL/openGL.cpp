@@ -1,5 +1,3 @@
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
 #include "openGL.hpp"
 
 //constructors/destructors---------------------------------
@@ -223,30 +221,7 @@ void	openGL::LoadScene(
 	this->_indexCount = static_cast<u32>(indexBufferSize / sizeof(u32));
 }
 
-void	openGL::LoadImage(std::string imagePath) {
-	std::error_code ec;
-	const std::filesystem::path exePath = std::filesystem::read_symlink("/proc/self/exe", ec);
-	if (!ec)
-		imagePath = exePath.parent_path() / imagePath;
-
-	stbi_set_flip_vertically_on_load(true);
-	int width, height, nrChannels;
-	unsigned char *data = stbi_load(imagePath.c_str(), &width, &height, &nrChannels, 0);
-	if (!data) {
-		glfwTerminate();
-		std::exit(1);
-	}
-
-	GLint internalFormat = GL_RGB;
-	GLenum dataFormat = GL_RGB;
-	if (nrChannels == 1) {
-		internalFormat = GL_RED;
-		dataFormat = GL_RED;
-	} else if (nrChannels == 4) {
-		internalFormat = GL_RGBA;
-		dataFormat = GL_RGBA;
-	}
-
+void	openGL::LoadImage(unsigned char* imageData, size_t width, size_t height) {
 	glGenTextures(1, &this->_texture);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, this->_texture);
@@ -257,11 +232,9 @@ void	openGL::LoadImage(std::string imagePath) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, imageData);
 	glGenerateMipmap(GL_TEXTURE_2D);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-
-	stbi_image_free(data);
 }
 
 void openGL::Loop(void (*loop)(openGL&)) {

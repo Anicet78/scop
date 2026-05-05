@@ -1,17 +1,17 @@
 #include "scop.hpp"
 
-static openGL* openGL_ptr = NULL;
-Chrono chrono;
-u8 renderType = render_type::COLORED;
-float coloredOpacity = 1.0f;
-float smoothOpacity = 0.0f;
-float imgOpacity = 0.0f;
-mat4 modelToPivot = mat4::identity();
-mat4 modelFromPivot = mat4::identity();
-float rotationSpeed = 0.9f;
-i8 rotationDirection = 1;
-static i8	moveObject = 1;
-static bool	mouseInitialized = false;
+static openGL*	openGL_ptr = NULL;
+Chrono			chrono;
+u8				renderType = render_type::COLORED;
+float			coloredOpacity = 1.0f;
+float			smoothOpacity = 0.0f;
+float			imgOpacity = 0.0f;
+mat4			modelToPivot = mat4::identity();
+mat4			modelFromPivot = mat4::identity();
+float			rotationSpeed = 0.9f;
+i8				rotationDirection = 1;
+static i8		moveObject = 1;
+static bool		mouseInitialized = false;
 static float	lastMouseX = 0.0f;
 static float	lastMouseY = 0.0f;
 static float	mouseYaw = 0.0f;

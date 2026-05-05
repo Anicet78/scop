@@ -76,7 +76,7 @@ class openGL {
 			const std::vector<VertexAttribDesc>& attributes,
 			GLenum usage = GL_STATIC_DRAW
 		);
-		void	LoadImage(std::string imagePath);
+		void	LoadImage(unsigned char* imageData, size_t width, size_t height);
 		void	Loop(void (*loop)(openGL&));
 
 };

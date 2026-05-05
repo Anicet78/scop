@@ -6,6 +6,7 @@
 # include <algorithm>
 # include "openGL/openGL.hpp"
 # include "ObjParser.hpp"
+# include "BmpParser.hpp"
 # include "vec2.hpp"
 # include "vec3.hpp"
 # include "vec4.hpp"
@@ -42,6 +43,7 @@ struct FaceElementHash {
 
 int		parseFile(std::string_view fileName, ObjParser& objParser);
 void	loadScene(ObjParser& objParser, openGL& openGL);
+void	loadImage(std::string imagePath, openGL& openGL);
 void	setup(openGL& openGL, ObjParser& objParser);
 void	loop(openGL& openGL);
 

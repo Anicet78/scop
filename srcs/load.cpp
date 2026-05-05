@@ -64,10 +64,7 @@ void	loadScene(ObjParser& objParser, openGL& openGL) {
 		normals.push_back(normal);
 	}
 
-	auto start = std::chrono::steady_clock::now();
 	resolveMissingNormals(normals, objParser.raw.vertices, objParser.raw.faces);
-	auto end = std::chrono::steady_clock::now();
-	std::cout << "Time to resolve missing normals: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << std::endl << std::endl;
 
 	std::vector<Vertex> vertices;
 	std::vector<u32> indices;
@@ -116,4 +113,20 @@ void	loadScene(ObjParser& objParser, openGL& openGL) {
 		attributes,
 		GL_STATIC_DRAW
 	);
+}
+
+void	loadImage(std::string imagePath, openGL& openGL) {
+	std::error_code ec;
+	const std::filesystem::path exePath = std::filesystem::read_symlink("/proc/self/exe", ec);
+	if (!ec)
+		imagePath = exePath.parent_path() / imagePath;
+
+	BMP bmp(imagePath);
+	if (bmp.failed) {
+		std::cout << "Image parsing failed" << std::endl;
+		glfwTerminate();
+		std::exit(1);
+	}
+
+	openGL.LoadImage(bmp.data.data(), bmp.width, bmp.height);
 }
