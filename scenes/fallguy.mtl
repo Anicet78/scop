@@ -1,0 +1,123 @@
+# Blender 5.0.1 MTL File: 'None'
+# www.blender.org
+
+newmtl Boots
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd Boots_baseColor.jpeg
+map_Bump -bm 1.000000 Boots_normal.png
+
+newmtl GoldButton
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd GoldButton_baseColor.jpeg
+map_Bump -bm 1.000000 GoldButton_normal.png
+
+newmtl Hair1
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd Hair1_baseColor.jpeg
+map_Bump -bm 1.000000 Hair1_normal.png
+
+newmtl LeatherStrap
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd LeatherStrap_baseColor.jpeg
+map_Bump -bm 1.000000 LeatherStrap_normal.png
+
+newmtl MetalRing
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd MetalRing_baseColor.jpeg
+map_Bump -bm 1.000000 MetalRing_normal.png
+
+newmtl Pants1
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd Pants1_baseColor.jpeg
+map_Bump -bm 1.000000 Pants1_normal.png
+
+newmtl Shirt
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd Shirt_baseColor.jpeg
+map_Bump -bm 1.000000 Shirt_normal.png
+
+newmtl Skin
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd Skin_baseColor.jpeg
+map_Bump -bm 1.000000 Skin_normal.png
+
+newmtl WhiteFace
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd WhiteFace_baseColor.jpeg
+map_Bump -bm 1.000000 WhiteFace_normal.png
+
+newmtl lambert14
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd lambert14_baseColor.jpeg
+map_Bump -bm 1.000000 lambert14_normal.png
+
+newmtl lambert15
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd lambert15_baseColor.jpeg
+map_Bump -bm 1.000000 lambert15_normal.png
