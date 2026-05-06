@@ -102,12 +102,18 @@ Example:
 
 ```
 .
-├── srcs/
-│   ├── openGL/          # OpenGL/GLFW wrapper, shaders (GLSL), camera
-│   └── ...              # main loop, setup, model loading
-├── objParser/           # OBJ/MTL parsing library (builds libobjparser.a)
-├── headers/             # Math utilities (vec/mat), wrappers
-└── textures/            # BMP textures used in IMAGE mode
+├── Makefile
+├── headers/                 # Public headers used by the main app
+│   ├── scop.hpp
+│   ├── math/                # vec/mat + ft_math
+│   ├── openGL/              # Camera + OpenGL wrapper headers + vendored GLAD headers
+│   └── utils/               # BMP parser, chrono, color, types...
+├── srcs/                    # Main application sources
+│   ├── openGL/              # OpenGL/GLFW implementation + shaders + glad
+│   └── ...
+├── objParser/               # OBJ/MTL parsing library (builds libobjparser.a)
+├── scenes/                  # Example models (.obj) and materials (.mtl)
+└── textures/                # BMP textures used in IMAGE mode
 ```
 
 > **Window settings:** maximized on startup, resizable, MSAA ×4, depth test enabled.
