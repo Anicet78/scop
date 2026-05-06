@@ -35,12 +35,6 @@ UV	ObjParser::NewUV(std::istringstream& ss)
 		ThrowError("Invalid coordinate argument in `vt`", ss, this->countLines, this->fileName);
 	if (ss >> std::ws; ss.peek() != EOF)
 		ThrowError("Too many arguments in `vt`", ss, this->countLines, this->fileName);
-	if (u < 0 || u > 1)
-		ThrowError("Invalid u coordinate in `vt`, every coordinates should be in [0,1]", this->countLines, this->fileName);
-	if (v < 0 || v > 1)
-		ThrowError("Invalid v coordinate in `vt`, every coordinates should be in [0,1]", this->countLines, this->fileName);
-	if (w < 0 || w > 1)
-		ThrowError("Invalid w coordinate in `vt`, every coordinates should be in [0,1]", this->countLines, this->fileName);
 	return (UV(u, v, w));
 }
 

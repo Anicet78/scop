@@ -133,13 +133,13 @@ static void processRotation(openGL& openGL) {
 	prevAltState = altState;
 
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-		if (rotationSpeed < 10.0)
-			rotationSpeed += 0.05;
+		if (rotationSpeed < 30.0)
+			rotationSpeed += 0.1;
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
 		if (rotationSpeed > 0.4)
-			rotationSpeed -= 0.05;
+			rotationSpeed -= 0.1;
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
