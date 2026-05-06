@@ -10,6 +10,15 @@
 
 ---
 
+## Table of contents
+
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Build](#build)
+- [Usage](#usage)
+- [Controls](#controls)
+- [Project structure](#project-structure)
+
 ## Features
 
 - **OBJ parsing** via an internal `objParser/` library — converts geometry to triangles, falls back to per-face normals when vertex normals are missing
@@ -116,6 +125,7 @@ Example:
 └── textures/                # BMP textures used in IMAGE mode
 ```
 
-> **Window settings:** maximized on startup, resizable, MSAA ×4, depth test enabled.
-> Shaders are loaded from `srcs/openGL/VertexShader.glsl` and `srcs/openGL/FragmentShader.glsl`.
-> GLAD is vendored; GLFW is linked as a system library.
+> **Notes**
+> - Window: maximized on startup, resizable, MSAA ×4, depth test enabled<br>
+> - Shaders: `srcs/openGL/VertexShader.glsl` and `srcs/openGL/FragmentShader.glsl`<br>
+> - GLAD is vendored; GLFW is linked as a system library
