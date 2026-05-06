@@ -1,8 +1,12 @@
+<div align="center">
+
 # scop
 
 > A lightweight `.obj` viewer built in C++/OpenGL — loads a Wavefront model, displays it in real time, and supports multiple rendering modes, auto-rotation, and free-look camera movement.
 
 ![C++20](https://img.shields.io/badge/C%2B%2B-20-blue) ![OpenGL](https://img.shields.io/badge/OpenGL-3.3-green) ![GLFW](https://img.shields.io/badge/GLFW-3-orange) ![Linux](https://img.shields.io/badge/platform-Linux-lightgrey)
+
+</div>
 
 ---
 
