@@ -1,5 +1,5 @@
 CXX			= c++
-CXXFLAGS	= -std=c++20 -MMD -MP -ggdb -Wall -Wextra
+CXXFLAGS	= -std=c++20 -MMD -MP -ggdb -Wall -Wextra -Werror
 
 PARSER_DIR	= ./objParser
 PARSER_LIB	= $(PARSER_DIR)/libobjparser.a
